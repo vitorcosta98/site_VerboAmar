@@ -3,7 +3,39 @@
 
 {% block body %}
 
-<h1>Área Acadêmica</h1>
+<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem;">
+    <img src="{{url_for('static', filename='academica_logo.png')}}" alt="study" height="65">
+    <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0;">Área Acadêmica</h1>
+   
+</div>
+<hr>
+
+<div class="row" style="padding-left: 3rem;">
+  <div class="col-sm-3 mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Jiu Jitsu</h5>
+        <p class="card-text">Número de Turmas: X</p>
+        <p class="card-text">Dias das Aulas: Segunda - Quarta - Sexta</p>
+        <p class="card-text">Turnos das Aulas: Manhã - Tarde</p>
+        <p class="card-text">Horário das Aulas: 08:00 - 09:00 / 16:00 - 17:00</p>
+        <a href="#" class="btn btn-primary">Acessar Curso</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Ballet</h5>
+        <p class="card-text">Número de Turmas: X</p>
+        <p class="card-text">Dias das Aulas: Segunda - Quarta - Sexta</p>
+        <p class="card-text">Turnos das Aulas: Manhã - Tarde</p>
+        <p class="card-text">Horário das Aulas: 08:00 - 09:00 / 16:00 - 17:00</p>
+        <a href="#" class="btn btn-primary">Acessar Curso</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
 
