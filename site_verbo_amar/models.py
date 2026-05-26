@@ -28,7 +28,7 @@ class Aluno(database.Model):
     nome_completo = database.Column(database.String, nullable=False)
     nome_mãe = database.Column(database.String, nullable=False)
     nome_pai = database.Column(database.String, nullable=False)
-    data_aniversario = database.Column(database.Datetime, nullable=False)
+    data_aniversario = database.Column(database.DateTime, nullable=False)
 
 class Turma(database.Model):
     id = database.Column(database.Integer, primary_key=True)
