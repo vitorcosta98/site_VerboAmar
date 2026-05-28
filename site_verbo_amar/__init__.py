@@ -18,3 +18,5 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'alert-info'
 
 from site_verbo_amar import routes
+with app.app_context():
+    database.create_all()

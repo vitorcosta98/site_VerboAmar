@@ -43,3 +43,23 @@ def login():
 @app.route('/cadastro')
 def cadastro():
     return render_template('cadastro.html')
+
+@app.route('/cadastro/cad_professor', methods=['GET','POST'])
+def cad_professor():
+    form_criarconta = FormCriarConta()
+    if form_criarconta.validate_on_submit() and 'botao_submit_criarcontar' in request.form:
+        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
+        usuario = Usuario(username=form_criarconta.username.data,
+                          email=form_criarconta.email.data,
+                          senha=senha_cript,
+                          professor='não',
+                          foto_perfil='logo.png',
+                          adm="não",
+                          data_aniversario = "teste")
+        database.session.add(usuario)
+        database.session.commit()
+        flash(f'Conta criada para o e-mail: {form_criarconta.email.data}', 'alert-success')
+        return redirect(url_for('home'))
+
+
+    return render_template('cad_professor.html', form_criarconta=form_criarconta)

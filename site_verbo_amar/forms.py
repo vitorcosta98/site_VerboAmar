@@ -1,18 +1,19 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from site_verbo_amar.models import Usuario
 from flask_login import current_user
 
 class FormCriarConta(FlaskForm):
     username = StringField("Nome do Usuário", validators=[DataRequired()])
-    email = professor = BooleanField("Professor", validators=[DataRequired()])
+    email = StringField("E-mail", validators=[DataRequired()])
     senha = PasswordField("Senha:", validators=[DataRequired(), Length(6, 20)])
-    professor = BooleanField("Professor", validators=[DataRequired()])
-    adm = BooleanField("Adm", validators=[DataRequired()])
-    cursos = StringField("Cursos", validators=[DataRequired()])
-    confirmacao_senha = PasswordField("Confirmação da Senha:", validators=[DataRequired(), EqualTo(senha)])
+    confirmacao_senha = PasswordField("Confirmação da Senha:", validators=[DataRequired(), EqualTo('senha')])
+    professor = BooleanField("Professor")
+    adm = BooleanField("Adm")
+    data_aniversario = StringField("Data Aniversário", validators=[DataRequired()])
+
     botao_submit_criarconta = SubmitField('Criar Conta')
 
     def validate_email(self, email):
