@@ -11,10 +11,8 @@ class Usuario(database.Model, UserMixin):
     username = database.Column(database.String, nullable=False)
     email = database.Column(database.String, nullable=False, unique=True)
     senha = database.Column(database.String, nullable=False)
-    foto_perfil = database.Column(database.String, default='default.png')
-    professor = database.Column(database.String, nullable=False, default='Não')
-    adm = database.Column(database.String, nullable=False, default='Não')
-    cursos = database.Column(database.String, nullable=False, default='Sem Turmas')
+    
+
 
 class Curso(database.Model):
     id = database.Column(database.Integer, primary_key=True)
@@ -25,6 +23,7 @@ class Curso(database.Model):
 
 class Aluno(database.Model):
     id = database.Column(database.Integer, primary_key=True)
+    cpf = database.Column(database.Integer, nullable=False)
     nome_completo = database.Column(database.String, nullable=False)
     nome_mãe = database.Column(database.String, nullable=False)
     nome_pai = database.Column(database.String, nullable=False)

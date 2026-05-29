@@ -15,7 +15,9 @@
       <div class="card-body">
         <h5 class="card-title">Cadastrar Professor</h5>
         <img src="{{url_for('static', filename='professor_logo.png')}}" alt="study" height="100">
-        <a href="#" class="btn btn-primary">Registrar Professor</a>
+        <a class="w-100", href="{{ url_for('cad_professor')}}">
+          <button class="btn btn-primary">Registrar Professor</button>
+        </a>
       </div>
     </div>
     </div>
@@ -30,7 +32,7 @@
     </div>
     </div>
     
-    <div class="col-sm-2 mb-2 mb-sm-2">
+    <div class="col-sm-2 mb-2 mb-sm-0">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Cadastrar Atividade</h5>
@@ -40,7 +42,7 @@
     </div>
     </div>
 
-    <div class="col-sm-2 mb-2 mb-sm-2">
+    <div class="col-sm-2 mb-2 mb-sm-0">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Cadastrar Turma</h5>
