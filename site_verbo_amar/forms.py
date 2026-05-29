@@ -7,12 +7,9 @@ from flask_login import current_user
 
 class FormCriarConta(FlaskForm):
     username = StringField("Nome do Usuário", validators=[DataRequired()])
-    email = StringField("E-mail", validators=[DataRequired()])
+    email = StringField("E-mail", validators=[DataRequired(), Email()])
     senha = PasswordField("Senha:", validators=[DataRequired(), Length(6, 20)])
     confirmacao_senha = PasswordField("Confirmação da Senha:", validators=[DataRequired(), EqualTo('senha')])
-    professor = BooleanField("Professor")
-    adm = BooleanField("Adm")
-    data_aniversario = StringField("Data Aniversário", validators=[DataRequired()])
 
     botao_submit_criarconta = SubmitField('Criar Conta')
 

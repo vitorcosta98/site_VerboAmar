@@ -74,54 +74,7 @@
       {% endif %}
     </fieldset>
 
-    <fieldset>
-      <div class="form-group">
-        {{ form_criarconta.professor.label(class="form-control-label") }}
-        {% if form_criarconta.professor.errors %}
-          {{ form_criarconta.professor(class='form-check-inputis-invalid')}}
-      </div>
-      <div class="invalid-feedback">
-        {% for erro in form_criarconta.professor.errors %}
-          {{erro}}
-        {% endfor %}
-      </div>
-      {% else %}
-        {{form_criarconta.professor(class="form-check-input")}}
-      {% endif %}
-    </fieldset>
-
-    <fieldset>
-      <div class="form-group">
-        {{ form_criarconta.adm.label(class="form-control-label") }}
-        {% if form_criarconta.adm.errors %}
-          {{ form_criarconta.adm(class='form-check-input is-invalid')}}
-      </div>
-      <div class="invalid-feedback">
-        {% for erro in form_criarconta.adm.errors %}
-          {{erro}}
-        {% endfor %}
-      </div>
-      {% else %}
-        {{form_criarconta.adm(class="form-check-input")}}
-      {% endif %}
-    </fieldset>
-
-    <fieldset>
-      <div class="form-group">
-        {{ form_criarconta.data_aniversario.label(class="form-control-label") }}
-        {% if form_criarconta.data_aniversario.errors %}
-          {{ form_criarconta.data_aniversario(class='form-control is-invalid')}}
-      </div>
-      <div class="invalid-feedback">
-        {% for erro in form_criarconta.data_aniversario.errors %}
-          {{erro}}
-        {% endfor %}
-      </div>
-      {% else %}
-        {{form_criarconta.data_aniversario(class="form-control")}}
-      {% endif %}
-    </fieldset>
-    {{form_criarconta.botao_submit_criarconta(class='btn btn-primary mt-2')}}
+      {{form_criarconta.botao_submit_criarconta(class='btn btn-primary mt-2')}}
   </form>
 </div>
   

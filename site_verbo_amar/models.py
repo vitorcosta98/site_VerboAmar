@@ -11,10 +11,7 @@ class Usuario(database.Model, UserMixin):
     username = database.Column(database.String, nullable=False)
     email = database.Column(database.String, nullable=False, unique=True)
     senha = database.Column(database.String, nullable=False)
-    foto_perfil = database.Column(database.String, default='logo.png')
-    professor = database.Column(database.String, nullable=False, default='Não')
-    adm = database.Column(database.String, nullable=False, default='Não')
-    data_aniversario = database.Column(database.String, nullable=False)
+    
 
 
 class Curso(database.Model):
