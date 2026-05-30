@@ -5,6 +5,7 @@ from site_verbo_amar.models import Usuario
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
+from datetime import datetime
 
 @app.route("/")
 def home():
@@ -48,12 +49,16 @@ def cadastro():
 def cad_professor():
     form_criarconta = FormCriarConta()
     if form_criarconta.validate_on_submit() and 'botao_submit_criarconta' in request.form:
+        data_aniversario = datetime.strptime(form_criarconta.data_aniversario.data, '%d/%m/%Y')
         senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
         usuario = Usuario(username=form_criarconta.username.data,
                           email=form_criarconta.email.data,
-                          senha=senha_cript)
+                          senha=senha_cript, sexo=form_criarconta.sexo.data,
+                          adm=form_criarconta.adm.data, professor=form_criarconta.professor.data,
+                          data_aniversario=data_aniversario)
+        
         database.session.add(usuario)
         database.session.commit()
         flash(f'Conta criada para o e-mail: {form_criarconta.email.data}', 'alert-success')
         return redirect(url_for('home'))
-    return render_template('cad_professor.html', form_criarconta=form_criarconta)
+    return render_template('cad_professor.html', form_criarconta=form_criarconta, info_sexo=['M', 'F'])
