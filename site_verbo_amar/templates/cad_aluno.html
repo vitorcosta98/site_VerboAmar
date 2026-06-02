@@ -1,0 +1,117 @@
+
+{% extends 'base.html'%}
+
+{% block body %}
+
+<h1>Cadastro de Alunos</h1>
+<h2>Por favor, preencha os campos abaixo</h2>
+
+
+<div class="col">
+  <form method="POST", action="" class="border p-4 mt-1">
+    {{ form_cad_aluno.csrf_token }}
+    <fieldset>
+
+      <div class="form-group">
+        {{ form_cad_aluno.nome_completo.label(class="form-control-label") }}
+        {% if form_cad_aluno.nome_completo.errors %}
+          {{ form_cad_aluno.nome_completo(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_aluno.nome_completo.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_aluno.nome_completo(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_aluno.cpf.label(class="form-control-label") }}
+        {% if form_cad_aluno.cpf.errors %}
+          {{ form_cad_aluno.cpf(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_aluno.cpf.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_aluno.cpf(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_aluno.nome_mae.label(class="form-control-label") }}
+        {% if form_cad_aluno.nome_mae.errors %}
+          {{ form_cad_aluno.nome_mae(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_aluno.nome_mae.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_aluno.nome_mae(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_aluno.nome_pai.label(class="form-control-label") }}
+        {% if form_cad_aluno.nome_pai.errors %}
+          {{ form_cad_aluno.nome_pai(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_aluno.nome_pai.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_aluno.nome_pai(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_aluno.sexo.label(class="form-label") }}
+        {% if form_cad_aluno.sexo.errors %}
+          {{ form_cad_aluno.sexo(class='form-label is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_aluno.sexo.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_aluno.sexo(class="form-select")}}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_aluno.data_aniversario.label(class="form-control-label") }}
+        {% if form_cad_aluno.data_aniversario.errors %}
+          {{ form_cad_aluno.data_aniversario(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_aluno.data_aniversario.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_aluno.data_aniversario(class="form-control", placeholder='DD/MM/AAAA')}}
+      {% endif %}
+    </fieldset>
+
+      {{form_cad_aluno.botao_submit_cad(class='btn btn-primary mt-2')}}
+  </form>
+</div>
+  
+
+{% endblock %}
+

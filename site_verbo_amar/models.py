@@ -26,9 +26,10 @@ class Curso(database.Model):
 
 class Aluno(database.Model):
     id = database.Column(database.Integer, primary_key=True)
-    cpf = database.Column(database.Integer, nullable=False)
     nome_completo = database.Column(database.String, nullable=False)
-    nome_mãe = database.Column(database.String, nullable=False)
+    cpf = database.Column(database.Integer, nullable=False)
+    sexo = database.Column(database.String, nullable=False)
+    nome_mae = database.Column(database.String, nullable=False)
     nome_pai = database.Column(database.String, nullable=False)
     data_aniversario = database.Column(database.DateTime, nullable=False)
 

@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField,SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
-from site_verbo_amar.models import Usuario
+from site_verbo_amar.models import Usuario, Aluno
 from flask_login import current_user
 from wtforms.fields import DateField
 from datetime import datetime
@@ -35,6 +35,34 @@ class FormCriarConta(FlaskForm):
             datetime.strptime(field.data,"%d/%m/%Y")
         except ValueError:
             raise ValidationError('Data inválida. Use o formato DD/MM/AAAA')
+        
+
+class FormCadAluno(FlaskForm):
+    nome_completo = StringField("Nome do Aluno:", validators=[DataRequired()])
+    cpf = StringField("CPF do Aluno:", validators=[DataRequired()])
+    sexo = SelectField("Sexo:", choices=[("", "Selecione..."), ("M", "M"), ("F", "F")], validators=[DataRequired()])
+    nome_mae = StringField("Nome da Mãe:", validators=[DataRequired()])
+    nome_pai = StringField("Nome do Pai:", validators=[DataRequired()])
+    data_aniversario = StringField('Data Aniversário',
+                                   validators=[
+                                       DataRequired(),
+                                       Regexp(r'^\d{2}/\d{2}/\d{4}',message="Use o formato DD/MM/AAAA")
+                                   ],
+                                   render_kw={'placeholder':'DD/MM/AAAA'})
+
+    botao_submit_cad = SubmitField('Cadastrar Aluno')
+
+    def validate_cpf(self, cpf):
+        aluno = Aluno.query.filter_by(cpf=cpf.data).first()
+        if aluno:
+            raise ValidationError('E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar.')
+        
+    def validate_data_aniversario(self,field):
+        try:
+            datetime.strptime(field.data,"%d/%m/%Y")
+        except ValueError:
+            raise ValidationError('Data inválida. Use o formato DD/MM/AAAA')
+
 
 class FormLogin(FlaskForm):
     email = StringField("E-mail", validators=[DataRequired(), Email()])

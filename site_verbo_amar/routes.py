@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
-from site_verbo_amar.forms import FormCriarConta, FormLogin
-from site_verbo_amar.models import Usuario
+from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin
+from site_verbo_amar.models import Usuario, Aluno
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -45,6 +45,7 @@ def login():
 def cadastro():
     return render_template('cadastro.html')
 
+
 @app.route('/cadastro/cad_professor', methods=['GET','POST'])
 def cad_professor():
     form_criarconta = FormCriarConta()
@@ -62,3 +63,23 @@ def cad_professor():
         flash(f'Conta criada para o e-mail: {form_criarconta.email.data}', 'alert-success')
         return redirect(url_for('home'))
     return render_template('cad_professor.html', form_criarconta=form_criarconta, info_sexo=['M', 'F'])
+
+
+@app.route('/cadastro/cad_aluno', methods=['GET','POST'])
+def cad_aluno():
+    form_cad_aluno = FormCadAluno()
+    if form_cad_aluno.validate_on_submit() and 'botao_submit_cad' in request.form:
+        data_aniversario = datetime.strptime(form_cad_aluno.data_aniversario.data, '%d/%m/%Y')
+        aluno = Aluno(nome_completo=form_cad_aluno.nome_completo.data,
+                        cpf = form_cad_aluno.cpf.data,
+                        sexo = form_cad_aluno.sexo.data,
+                        nome_mae= form_cad_aluno.nome_mae.data,
+                        nome_pai = form_cad_aluno.nome_pai.data,
+                        data_aniversario = data_aniversario
+                        )
+        
+        database.session.add(aluno)
+        database.session.commit()
+        flash(f'Cadastro do aluno: {form_cad_aluno.nome_completo.data} concluído com sucesso!', 'alert-success')
+        return redirect(url_for('home'))
+    return render_template('cad_aluno.html', form_cad_aluno=form_cad_aluno, info_sexo=['M', 'F'])
