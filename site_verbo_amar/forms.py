@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField,SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
-from site_verbo_amar.models import Usuario, Aluno
+from site_verbo_amar.models import Usuario, Aluno, Atividade
 from flask_login import current_user
 from wtforms.fields import DateField
 from datetime import datetime
@@ -49,7 +49,6 @@ class FormCadAluno(FlaskForm):
                                        Regexp(r'^\d{2}/\d{2}/\d{4}',message="Use o formato DD/MM/AAAA")
                                    ],
                                    render_kw={'placeholder':'DD/MM/AAAA'})
-
     botao_submit_cad = SubmitField('Cadastrar Aluno')
 
     def validate_cpf(self, cpf):
@@ -62,6 +61,23 @@ class FormCadAluno(FlaskForm):
             datetime.strptime(field.data,"%d/%m/%Y")
         except ValueError:
             raise ValidationError('Data inválida. Use o formato DD/MM/AAAA')
+
+
+class FormCadAtividade(FlaskForm):
+    atividade = StringField("Nome da Atividade:", validators=[DataRequired()])
+    segunda_feira = BooleanField("Segunda-Feira")
+    terca_feira = BooleanField("Terça-Feira")
+    quarta_feira = BooleanField("Quarta-Feira")
+    quinta_feira = BooleanField("Quinta-Feira")
+    sexta_feira = BooleanField("Sexta-Feira")
+    sabado = BooleanField("Sábado")
+    domingo = BooleanField("Domingo")
+    botao_submit_ativ = SubmitField('Cadastrar Atividade')
+
+    def validate_atividade(self, atividade):
+        ativ = Atividade.query.filter_by(atividade=atividade.data).first()
+        if ativ:
+            raise ValidationError('E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar.')
 
 
 class FormLogin(FlaskForm):

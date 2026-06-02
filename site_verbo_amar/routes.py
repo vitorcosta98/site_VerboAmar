@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
-from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin
-from site_verbo_amar.models import Usuario, Aluno
+from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade
+from site_verbo_amar.models import Usuario, Aluno, Atividade
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -83,3 +83,28 @@ def cad_aluno():
         flash(f'Cadastro do aluno: {form_cad_aluno.nome_completo.data} concluído com sucesso!', 'alert-success')
         return redirect(url_for('home'))
     return render_template('cad_aluno.html', form_cad_aluno=form_cad_aluno, info_sexo=['M', 'F'])
+
+
+def dias_cursos(form):
+    lista_dias = []
+    for campo in form:
+       if "_feira" in campo.name:
+           lista_dias.append(campo.label.text)
+    
+    return ';'.join(lista_dias)
+
+
+@app.route('/cadastro/cad_atividade', methods=['GET','POST'])
+def cad_atividade():
+    form_cad_ativ = FormCadAtividade()
+    dias_atividade = dias_cursos(form_cad_ativ)
+    print(dias_atividade)
+    if form_cad_ativ.validate_on_submit() and 'botao_submit_ativ' in request.form:
+        ativ = Atividade(atividade=form_cad_ativ.atividade.data,
+                        dias_aulas = dias_atividade)
+        
+        database.session.add(ativ)
+        database.session.commit()
+        flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
+        return redirect(url_for('home'))
+    return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ, dias_atividade=dias_atividade)

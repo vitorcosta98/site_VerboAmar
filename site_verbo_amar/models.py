@@ -17,9 +17,9 @@ class Usuario(database.Model, UserMixin):
     data_aniversario = database.Column(database.DateTime, nullable=False)
 
 
-class Curso(database.Model):
+class Atividade(database.Model):
     id = database.Column(database.Integer, primary_key=True)
-    nome_curso = database.Column(database.String, nullable=False, unique=True)
+    atividade = database.Column(database.String, nullable=False, unique=True)
     dias_de_aula = database.Column(database.String, nullable=False)
     horario_inicio = database.Column(database.String, nullable=False)
     horario_fim = database.Column(database.String, nullable=False)
