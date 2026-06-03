@@ -99,8 +99,10 @@ def cad_atividade():
     form_cad_ativ = FormCadAtividade()
     if form_cad_ativ.validate_on_submit() and 'botao_submit_ativ' in request.form:
         dias_atividade = dias_cursos(form_cad_ativ)
+        print(dias_atividade)
+        print(type(dias_atividade))
         ativ = Atividade(atividade=form_cad_ativ.atividade.data,
-                        dias_aulas = dias_atividade)
+                        dias_aula = dias_atividade)
         
         database.session.add(ativ)
         database.session.commit()
