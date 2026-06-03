@@ -88,18 +88,17 @@ def cad_aluno():
 def dias_cursos(form):
     lista_dias = []
     for campo in form:
-       if "_feira" in campo.name:
-           lista_dias.append(campo.label.text)
-    
-    return ';'.join(lista_dias)
+        if "_feira" in campo.name or campo.name in ('sabado','doming'):
+            if campo.data:
+                lista_dias.append(campo.label.text)
+    return ";".join(lista_dias)
 
 
 @app.route('/cadastro/cad_atividade', methods=['GET','POST'])
 def cad_atividade():
     form_cad_ativ = FormCadAtividade()
-    dias_atividade = dias_cursos(form_cad_ativ)
-    print(dias_atividade)
     if form_cad_ativ.validate_on_submit() and 'botao_submit_ativ' in request.form:
+        dias_atividade = dias_cursos(form_cad_ativ)
         ativ = Atividade(atividade=form_cad_ativ.atividade.data,
                         dias_aulas = dias_atividade)
         
@@ -107,4 +106,4 @@ def cad_atividade():
         database.session.commit()
         flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
         return redirect(url_for('home'))
-    return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ, dias_atividade=dias_atividade)
+    return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
