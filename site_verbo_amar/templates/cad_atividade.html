@@ -8,7 +8,7 @@
 
 
 <div class="col">
-  <form method="POST", action="" class="border p-4 mt-1">
+  <form method="POST", action="" class="border p-4 mt-1" enctype="multipart/form-data">
     {{ form_cad_ativ.csrf_token }}
     
     <fieldset>
@@ -27,18 +27,19 @@
       {% endif %}
     </fieldset>
 
+    <hr>
     <p>Dias das Aulas</p>
-    {% for campo in dias_atividade %}
-      {% if '_feira' in campo.name %}
-        <div class="form-group">
-          {{campo(class='form-check-input')}}
-          {{campo.label(class='form-check-label')}}
+    {% for campo in form_cad_ativ %}
+      {% if '_feira' in campo.name or campo.name == 'sabado' or campo.name == 'domingo'%}
+        <div class="form-check">
+          {{ campo(class='form-check-input')}}
+          {{ campo.label(class='form-check-label')}}
         </div>
-      {% endif %}
+      {%endif%}
     {% endfor %}
-
+  
     {{form_cad_ativ.botao_submit_ativ(class='btn btn-primary mt-2')}}
-    
-
+  </form>
+</div>
 {% endblock %}
 

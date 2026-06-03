@@ -20,9 +20,8 @@ class Usuario(database.Model, UserMixin):
 class Atividade(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     atividade = database.Column(database.String, nullable=False, unique=True)
-    dias_de_aula = database.Column(database.String, nullable=False)
-    horario_inicio = database.Column(database.String, nullable=False)
-    horario_fim = database.Column(database.String, nullable=False)
+    dias_aula = database.Column(database.String, nullable=False)
+
 
 class Aluno(database.Model):
     id = database.Column(database.Integer, primary_key=True)
@@ -37,6 +36,6 @@ class Turma(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     id_professor = database.Column(database.Integer, database.ForeignKey('usuario.id'))
     id_aluno = database.Column(database.Integer, database.ForeignKey('aluno.id'))
-    id_curso = database.Column(database.Integer, database.ForeignKey('curso.id'))
+    id_curso = database.Column(database.Integer, database.ForeignKey('atividade.id'))
 
 
