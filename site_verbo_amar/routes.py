@@ -109,3 +109,16 @@ def cad_atividade():
         flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
         return redirect(url_for('home'))
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
+
+
+
+def carregando_atividades():
+    lista_atividades = Atividade.query.all()
+    return lista_atividades
+
+
+@app.route('/cadastro/cad_turma', methods=['GET', 'POST'])
+def cad_turma():
+    atividades = carregando_atividades()
+    print(atividades)
+    return render_template('cad_turma.html', lista_atividades=atividades)

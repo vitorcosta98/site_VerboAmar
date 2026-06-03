@@ -80,6 +80,11 @@ class FormCadAtividade(FlaskForm):
             raise ValidationError('E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar.')
 
 
+class FormCadTurma(FlaskForm):
+    atividade = SelectField('Atividade', choices=[], validators=[DataRequired()])
+    botao_submit_turma = SubmitField("Cadastrar Turma")
+
+
 class FormLogin(FlaskForm):
     email = StringField("E-mail", validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired(), Length(6,20)])

@@ -37,5 +37,7 @@ class Turma(database.Model):
     id_professor = database.Column(database.Integer, database.ForeignKey('usuario.id'))
     id_aluno = database.Column(database.Integer, database.ForeignKey('aluno.id'))
     id_curso = database.Column(database.Integer, database.ForeignKey('atividade.id'))
+    horario_inicio = database.Column(database.Integer, nullable=False)
+    horario_fim = database.Column(database.Integer, nullable=False)
 
 
