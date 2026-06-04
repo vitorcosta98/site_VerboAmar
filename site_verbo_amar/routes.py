@@ -124,10 +124,16 @@ def carregar_alunos():
     return alunos
 
 
-def id_atividade():
-    atividade = Atividade.query.filter_by(atividade="Jiu Jitsu").first()
+def id_atividade(nome_atividade):
+    atividade = Atividade.query.filter_by(atividade=nome_atividade).first()
     id = atividade.id
     return id
+
+
+def id_professor(nome_professor):
+    professor = Usuario.query.filter_by(Usuario=nome_professor).first()
+    id_professor = professor.id
+    return id_professor  
 
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
@@ -138,11 +144,16 @@ def cad_turma():
     alunos = carregar_alunos()
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
-        id_ativ = id_atividade()
-        print(id_ativ)
+        form_ativ = request.form.get('atividade')
+        form_prof = request.form.get('professor')
+
+        
+        id_ativ = id_atividade(form_ativ)
+        id_prof = id_professor(form_prof) 
+        
         turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
-                      id_atividade=2,
-                      id_professor=2,
+                      id_atividade=id_ativ,
+                      id_professor=id_professor,
                       id_aluno=2,)
         database.session.add(turma)
         database.session.commit()

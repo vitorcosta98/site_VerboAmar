@@ -45,7 +45,10 @@
       {{form_cad_turma.professor.label(class='form-control-label')}}
       {% for professor in professores %}
         <li class="list-group-item">
-          <input class="form-check-input me-1" type="radio" value={{professor.username}} id={{professor.username}}>
+          <input class="form-check-input me-1" type="radio" 
+          name="professor"
+          value="{{professor.username}}"
+          id="{{professor.username}}>"
           <label class="form-check-label" for={{professor.username}}>{{professor.username}}</label>
         </li>
       {% endfor %}
@@ -56,7 +59,9 @@
       {{form_cad_turma.alunos.label(class='form-control-label')}}
       {% for aluno in alunos %}
         <li class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value={{aluno.nome_completo}} id={{aluno.nome_completo}}>
+          <input class="form-check-input me-1" type="checkbox" 
+          name="aluno"
+          value="{{aluno.nome_completo}}" id="{{aluno.nome_completo}}">
           <label class="form-check-label" for={{aluno.nome_completo}}>{{aluno.nome_completo}}</label>
         </li>
       {% endfor %}
