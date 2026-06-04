@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
 from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma
-from site_verbo_amar.models import Usuario, Aluno, Atividade
+from site_verbo_amar.models import Usuario, Aluno, Atividade, Turma
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -123,6 +123,13 @@ def carregar_alunos():
     alunos = Aluno.query.order_by(Aluno.nome_completo.asc())
     return alunos
 
+
+def id_atividade():
+    atividade = Atividade.query.filter_by(atividade="Jiu Jitsu").first()
+    id = atividade.id
+    return id
+
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 def cad_turma():
     form_cad_turma = FormTurma()
@@ -131,7 +138,15 @@ def cad_turma():
     alunos = carregar_alunos()
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
-        pass
+        id_ativ = id_atividade()
+        print(id_ativ)
+        turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
+                      id_atividade=2,
+                      id_professor=2,
+                      id_aluno=2,)
+        database.session.add(turma)
+        database.session.commit()
+
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
                            atividades=atividades,
