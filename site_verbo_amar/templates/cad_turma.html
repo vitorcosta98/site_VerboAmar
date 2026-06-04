@@ -29,10 +29,13 @@
     <hr>
     <ul class="list-group">
       {{form_cad_turma.atividade.label(class='form-control-label')}}
-      {% for atividade in atividades %}
+      {% for ativ in atividades %}
         <li class="list-group-item">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value={{atividade.atividade}} id={{atividade.atividade}}>
-          <label class="form-check-label" for={{atividade.atividade}}>{{atividade.atividade}}</label>
+          <input class="form-check-input me-1" type="radio" 
+          name="atividade" 
+          value="{{ativ.atividade}}" 
+          id="{{ativ.atividade}}">
+          <label class="form-check-label" for="{{ativ.atividade}}">{{ativ.atividade}}</label>
         </li>
       {% endfor %}
     </ul>
