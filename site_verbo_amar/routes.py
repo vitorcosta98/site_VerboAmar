@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
-from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade
+from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma
 from site_verbo_amar.models import Usuario, Aluno, Atividade
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -99,8 +99,6 @@ def cad_atividade():
     form_cad_ativ = FormCadAtividade()
     if form_cad_ativ.validate_on_submit() and 'botao_submit_ativ' in request.form:
         dias_atividade = dias_cursos(form_cad_ativ)
-        print(dias_atividade)
-        print(type(dias_atividade))
         ativ = Atividade(atividade=form_cad_ativ.atividade.data,
                         dias_aula = dias_atividade)
         
@@ -109,3 +107,11 @@ def cad_atividade():
         flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
         return redirect(url_for('home'))
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
+
+
+@app.route("/cadastro/cad_turma", methods=['GET','POST'])
+def cad_turma():
+    form_cad_turma = FormTurma()
+    if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
+        pass
+    return render_template('cad_turma.html')

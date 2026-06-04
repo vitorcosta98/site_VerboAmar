@@ -32,8 +32,10 @@ class Aluno(database.Model):
     nome_pai = database.Column(database.String, nullable=False)
     data_aniversario = database.Column(database.DateTime, nullable=False)
 
+
 class Turma(database.Model):
     id = database.Column(database.Integer, primary_key=True)
+    nome_turma = database.Column(database.String, nullable=False, unique=True)
     id_professor = database.Column(database.Integer, database.ForeignKey('usuario.id'))
     id_aluno = database.Column(database.Integer, database.ForeignKey('aluno.id'))
     id_curso = database.Column(database.Integer, database.ForeignKey('atividade.id'))

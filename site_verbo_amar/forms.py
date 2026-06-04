@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField,SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField,SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
 from site_verbo_amar.models import Usuario, Aluno, Atividade
 from flask_login import current_user
@@ -78,6 +78,14 @@ class FormCadAtividade(FlaskForm):
         ativ = Atividade.query.filter_by(atividade=atividade.data).first()
         if ativ:
             raise ValidationError('E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar.')
+
+
+class FormTurma(FlaskForm):
+    nome_turma = StringField("NOme da Turma:", validators=[DataRequired()])
+    atividade = StringField("Atividade:", validators=[DataRequired()])
+    professor = StringField("Professor:", validators=[DataRequired()])
+    alunos = StringField("Alunos", validators=[DataRequired()])
+    botao_submit_turma = SubmitField("Cadastrar Turma")
 
 
 class FormLogin(FlaskForm):
