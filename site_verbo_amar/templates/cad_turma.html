@@ -11,64 +11,53 @@
     {{ form_cad_turma.csrf_token }}
     
     <fieldset>
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-           {{ form_cad_turma.nome_turma.label(class="form-control-label") }}
-        </button>
-        <ul class="dropdown-menu">
-          {% for atividade in atividades %}
-            <li><a class="dropdown-item" href="%">atividade.atividade</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-
-    <fieldset>
       <div class="form-group">
-        {{ form_cad_turma.atividade.label(class="form-control-label") }}
-        {% if form_cad_turma.atividade.errors %}
-          {{ form_cad_turma.atividade(class='form-control is-invalid')}}
+        {{ form_cad_turma.nome_turma.label(class="form-control-label") }}
+        {% if form_cad_turma.nome_turma.errors %}
+          {{ form_cad_turma.nome_turma(class='form-control is-invalid')}}
       </div>
       <div class="invalid-feedback">
-        {% for erro in form_cad_turma.atividade.errors %}
+        {% for erro in form_cad_turma.nome_turma.errors %}
           {{erro}}
         {% endfor %}
       </div>
       {% else %}
-        {{form_cad_turma.atividade(class="form-control")}}
+        {{form_cad_turma.nome_turma(class="form-control")}}
       {% endif %}
     </fieldset>
 
-    <fieldset>
-      <div class="form-group">
-        {{ form_cad_turma.professor.label(class="form-control-label") }}
-        {% if form_cad_turma.professor.errors %}
-          {{ form_cad_turma.professor(class='form-control is-invalid')}}
-      </div>
-      <div class="invalid-feedback">
-        {% for erro in form_cad_turma.professor.errors %}
-          {{erro}}
-        {% endfor %}
-      </div>
-      {% else %}
-        {{form_cad_turma.professor(class="form-control")}}
-      {% endif %}
-    </fieldset>
+    <hr>
+    <ul class="list-group">
+      {{form_cad_turma.atividade.label(class='form-control-label')}}
+      {% for atividade in atividades %}
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value={{atividade.atividade}} id={{atividade.atividade}}>
+          <label class="form-check-label" for={{atividade.atividade}}>{{atividade.atividade}}</label>
+        </li>
+      {% endfor %}
+    </ul>
 
-    <fieldset>
-      <div class="form-group">
-        {{ form_cad_turma.alunos.label(class="form-control-label") }}
-        {% if form_cad_turma.alunos.errors %}
-          {{ form_cad_turma.alunos(class='form-control is-invalid')}}
-      </div>
-      <div class="invalid-feedback">
-        {% for erro in form_cad_turma.alunos.errors %}
-          {{erro}}
-        {% endfor %}
-      </div>
-      {% else %}
-        {{form_cad_turma.alunos(class="form-control")}}
-      {% endif %}
-    </fieldset>
+    <hr>
+    <ul class="list-group">
+      {{form_cad_turma.professor.label(class='form-control-label')}}
+      {% for professor in professores %}
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="radio" value={{professor.username}} id={{professor.username}}>
+          <label class="form-check-label" for={{professor.username}}>{{professor.username}}</label>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <hr>
+    <ul class="list-group">
+      {{form_cad_turma.alunos.label(class='form-control-label')}}
+      {% for aluno in alunos %}
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="checkbox" value={{aluno.nome_completo}} id={{aluno.nome_completo}}>
+          <label class="form-check-label" for={{aluno.nome_completo}}>{{aluno.nome_completo}}</label>
+        </li>
+      {% endfor %}
+    </ul>
 
     {{form_cad_turma.botao_submit_turma(class='btn btn-primary mt-2')}}
   </form>

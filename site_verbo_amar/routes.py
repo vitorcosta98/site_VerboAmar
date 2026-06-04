@@ -110,13 +110,30 @@ def cad_atividade():
 
 
 def carregar_atividades():
-    atividades = Atividade.query.order_by(Atividade.id.desc())
+    atividades = Atividade.query.order_by(Atividade.id.asc())
     return atividades
+
+
+def carregar_professores():
+    professores = Usuario.query.order_by(Usuario.username.asc())
+    return professores
+
+
+def carregar_alunos():
+    alunos = Aluno.query.order_by(Aluno.nome_completo.asc())
+    return alunos
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 def cad_turma():
     form_cad_turma = FormTurma()
     atividades = carregar_atividades()
+    professores = carregar_professores()
+    alunos = carregar_alunos()
+
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
         pass
-    return render_template('cad_turma.html', form_cad_turma=form_cad_turma, atividades=atividades)
+    return render_template('cad_turma.html',
+                           form_cad_turma=form_cad_turma,
+                           atividades=atividades,
+                           professores=professores,
+                           alunos=alunos)
