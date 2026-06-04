@@ -131,9 +131,19 @@ def id_atividade(nome_atividade):
 
 
 def id_professor(nome_professor):
-    professor = Usuario.query.filter_by(Usuario=nome_professor).first()
+    professor = Usuario.query.filter_by(username=nome_professor).first()
     id_professor = professor.id
     return id_professor  
+
+
+def id_aluno(lista_aluno):
+    lista_id = []
+    for aluno in lista_aluno:
+        mat_aluno = Aluno.query.filter_by(nome_completo=aluno).first()
+        id_aluno = str(mat_aluno.id)
+        lista_id.append(id_aluno)
+
+    return ";".join(lista_id)
 
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
@@ -146,17 +156,24 @@ def cad_turma():
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
         form_ativ = request.form.get('atividade')
         form_prof = request.form.get('professor')
-
+        form_alunos = request.form.getlist("aluno")
         
         id_ativ = id_atividade(form_ativ)
-        id_prof = id_professor(form_prof) 
+        id_prof = id_professor(form_prof)
+        id_alu = id_aluno(form_alunos)
+        print(id_alu) 
         
         turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
                       id_atividade=id_ativ,
                       id_professor=id_prof,
-                      id_aluno=2,)
+                      id_aluno=id_alu,)
+        
+
         database.session.add(turma)
         database.session.commit()
+
+        flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
+        return redirect(url_for('home'))
 
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
