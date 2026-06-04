@@ -11,11 +11,18 @@ from datetime import datetime
 def home():
     return render_template("home.html")
 
+
+@app.route("/pag_inicial")
+def pag_inicial():
+    return render_template("pag_inicial.html")
+
+
 @app.route("/area-academica")
+@login_required
 def area_academica():
     return render_template("area_academica.html")
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
     form_login = FormLogin()
     form_criarconta = FormCriarConta()
@@ -41,12 +48,22 @@ def login():
     
     return render_template('login.html', form_login=form_login, form_criarconta=form_criarconta)
 
+
+@app.route("/sair")
+def sair():
+    logout_user()
+    flash(f'Logout Feito com Sucesso', 'alert-success')
+    return redirect(url_for('home'))
+
+
 @app.route('/cadastro')
+@login_required
 def cadastro():
     return render_template('cadastro.html')
 
 
 @app.route('/cadastro/cad_professor', methods=['GET','POST'])
+@login_required
 def cad_professor():
     form_criarconta = FormCriarConta()
     if form_criarconta.validate_on_submit() and 'botao_submit_criarconta' in request.form:
@@ -66,6 +83,7 @@ def cad_professor():
 
 
 @app.route('/cadastro/cad_aluno', methods=['GET','POST'])
+@login_required
 def cad_aluno():
     form_cad_aluno = FormCadAluno()
     if form_cad_aluno.validate_on_submit() and 'botao_submit_cad' in request.form:
@@ -95,6 +113,7 @@ def dias_cursos(form):
 
 
 @app.route('/cadastro/cad_atividade', methods=['GET','POST'])
+@login_required
 def cad_atividade():
     form_cad_ativ = FormCadAtividade()
     if form_cad_ativ.validate_on_submit() and 'botao_submit_ativ' in request.form:
@@ -147,6 +166,7 @@ def id_aluno(lista_aluno):
 
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
+@login_required
 def cad_turma():
     form_cad_turma = FormTurma()
     atividades = carregar_atividades()
