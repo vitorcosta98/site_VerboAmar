@@ -81,7 +81,7 @@ class FormCadAtividade(FlaskForm):
 
 
 class FormTurma(FlaskForm):
-    nome_turma = StringField("NOme da Turma:", validators=[DataRequired()])
+    nome_turma = StringField("Nome da Turma:", validators=[DataRequired()])
     atividade = StringField("Atividade:", validators=[DataRequired()])
     professor = StringField("Professor:", validators=[DataRequired()])
     alunos = StringField("Alunos", validators=[DataRequired()])

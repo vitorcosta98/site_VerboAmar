@@ -109,9 +109,14 @@ def cad_atividade():
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
 
 
+def carregar_atividades():
+    atividades = Atividade.query.order_by(Atividade.id.desc())
+    return atividades
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 def cad_turma():
     form_cad_turma = FormTurma()
+    atividades = carregar_atividades()
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
         pass
-    return render_template('cad_turma.html')
+    return render_template('cad_turma.html', form_cad_turma=form_cad_turma, atividades=atividades)

@@ -6,5 +6,72 @@
 <h1>Cadastro de Turmas</h1>
 <h2>Por favor, preencha os campos abaixo</h2>
 
+<div class="col">
+  <form method="POST", action="" class="border p-4 mt-1">
+    {{ form_cad_turma.csrf_token }}
+    
+    <fieldset>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+           {{ form_cad_turma.nome_turma.label(class="form-control-label") }}
+        </button>
+        <ul class="dropdown-menu">
+          {% for atividade in atividades %}
+            <li><a class="dropdown-item" href="%">atividade.atividade</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_turma.atividade.label(class="form-control-label") }}
+        {% if form_cad_turma.atividade.errors %}
+          {{ form_cad_turma.atividade(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_turma.atividade.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_turma.atividade(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_turma.professor.label(class="form-control-label") }}
+        {% if form_cad_turma.professor.errors %}
+          {{ form_cad_turma.professor(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_turma.professor.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_turma.professor(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        {{ form_cad_turma.alunos.label(class="form-control-label") }}
+        {% if form_cad_turma.alunos.errors %}
+          {{ form_cad_turma.alunos(class='form-control is-invalid')}}
+      </div>
+      <div class="invalid-feedback">
+        {% for erro in form_cad_turma.alunos.errors %}
+          {{erro}}
+        {% endfor %}
+      </div>
+      {% else %}
+        {{form_cad_turma.alunos(class="form-control")}}
+      {% endif %}
+    </fieldset>
+
+    {{form_cad_turma.botao_submit_turma(class='btn btn-primary mt-2')}}
+  </form>
+</div>
 
 {% endblock %}
