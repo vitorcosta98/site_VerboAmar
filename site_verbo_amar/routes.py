@@ -153,7 +153,7 @@ def cad_turma():
         
         turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
                       id_atividade=id_ativ,
-                      id_professor=id_professor,
+                      id_professor=id_prof,
                       id_aluno=2,)
         database.session.add(turma)
         database.session.commit()
