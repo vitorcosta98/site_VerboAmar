@@ -14,9 +14,9 @@
     <div class="col-sm-3 mb-3 mb-sm-0">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{{ativ}}</h5>
-          <p class="card-text">Número de Turmas: X</p>
-          <p class="card-text">Dias das Aulas: {{atividades[ativ]}}</p>
+          <h5 class="card-title">{{atividades[ativ]["nome_atividade"]}}</h5>
+          <p class="card-text">Número de Turmas: {{atividades[ativ]["turmas"]}}</p>
+          <p class="card-text">Dias das Aulas: {{atividades[ativ]["dias_aula"]}}</p>
           <p class="card-text">Turnos das Aulas: Manhã - Tarde</p>
           <p class="card-text">Horário das Aulas: 08:00 - 09:00 / 16:00 - 17:00</p>
           <a href="#" class="btn btn-primary">Acessar Curso</a>

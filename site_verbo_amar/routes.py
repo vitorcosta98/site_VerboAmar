@@ -19,9 +19,24 @@ def pag_inicial():
 
 def carregar_nome_atividades():
     dict_ativ = {}
-    atividades = Atividade.query.all()
+    atividades = Atividade.query.order_by(Atividade.atividade.asc()).all()
     for ativ in atividades:
-        dict_ativ[ativ.atividade] = ativ.dias_aula.replace(";",' - ')
+        dict_ativ[ativ.id] = {"nome_atividade":ativ.atividade,
+                              "dias_aula":ativ.dias_aula.replace(";",' - '),
+                              "turmas":0,
+                              "professores":0,
+                              "alunos":0,}
+
+    return dict_ativ
+
+
+def carregar_turmas(dict_ativ):
+    turmas = Turma.query.order_by(Turma.id_atividade.asc()).all()
+    
+    for ativ in dict_ativ:
+        for id in turmas:
+            if ativ == id.id_atividade:
+                dict_ativ[ativ]['turmas'] += 1 
 
     return dict_ativ
 
@@ -30,7 +45,8 @@ def carregar_nome_atividades():
 @login_required
 def area_academica():
     atividades = carregar_nome_atividades()
-    print(atividades)
+    teste = carregar_turmas(atividades)
+    print(teste)
     return render_template("area_academica.html", atividades=atividades)
 
 @app.route('/login', methods=['GET','POST'])
