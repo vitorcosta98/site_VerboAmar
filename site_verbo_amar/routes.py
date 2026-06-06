@@ -17,10 +17,37 @@ def pag_inicial():
     return render_template("pag_inicial.html")
 
 
-@app.route("/area-academica")
+def carregar_nome_atividades():
+    dict_ativ = {}
+    atividades = Atividade.query.order_by(Atividade.atividade.asc()).all()
+    for ativ in atividades:
+        dict_ativ[ativ.id] = {"nome_atividade":ativ.atividade,
+                              "dias_aula":ativ.dias_aula.replace(";",' - '),
+                              "turmas":0,
+                              "professores":0,
+                              "alunos":0,}
+
+    return dict_ativ
+
+
+def carregar_turmas(dict_ativ):
+    turmas = Turma.query.order_by(Turma.id_atividade.asc()).all()
+    
+    for ativ in dict_ativ:
+        for id in turmas:
+            if ativ == id.id_atividade:
+                dict_ativ[ativ]['turmas'] += 1 
+
+    return dict_ativ
+
+
+@app.route("/area-academica", methods=['POST','GET'])
 @login_required
 def area_academica():
-    return render_template("area_academica.html")
+    atividades = carregar_nome_atividades()
+    teste = carregar_turmas(atividades)
+    print(teste)
+    return render_template("area_academica.html", atividades=atividades)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
