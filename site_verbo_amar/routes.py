@@ -17,10 +17,20 @@ def pag_inicial():
     return render_template("pag_inicial.html")
 
 
-@app.route("/area-academica")
+def carregar_nome_atividades():
+    lista_nomes = []
+    atividades = Atividade.query.all()
+    for ativ in atividades:
+        lista_nomes.append(ativ.atividade)
+
+    return lista_nomes
+
+
+@app.route("/area-academica", methods=['POST','GET'])
 @login_required
 def area_academica():
-    return render_template("area_academica.html")
+    atividades = carregar_nome_atividades()
+    return render_template("area_academica.html", atividades=atividades)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
