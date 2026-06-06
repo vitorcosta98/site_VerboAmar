@@ -25,7 +25,8 @@ def carregar_nome_atividades():
                               "dias_aula":ativ.dias_aula.replace(";",' - '),
                               "turmas":0,
                               "professores":[],
-                              "alunos":[],}
+                              "alunos":[],
+                              "n_professores":0}
 
     return dict_ativ
 
@@ -37,6 +38,9 @@ def carregar_turmas(dict_ativ):
         for id in turmas:
             if ativ == id.id_atividade:
                 dict_ativ[ativ]['turmas'] += 1
+                if not id.id_professor in dict_ativ[ativ]['professores']:
+                    dict_ativ[ativ]['professores'].append(id.id_professor)
+                    dict_ativ[ativ]['n_professores'] +=1
 
     return dict_ativ
 
