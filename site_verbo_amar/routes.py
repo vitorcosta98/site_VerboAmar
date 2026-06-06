@@ -18,18 +18,19 @@ def pag_inicial():
 
 
 def carregar_nome_atividades():
-    lista_nomes = []
+    dict_ativ = {}
     atividades = Atividade.query.all()
     for ativ in atividades:
-        lista_nomes.append(ativ.atividade)
+        dict_ativ[ativ.atividade] = ativ.dias_aula.replace(";",' - ')
 
-    return lista_nomes
+    return dict_ativ
 
 
 @app.route("/area-academica", methods=['POST','GET'])
 @login_required
 def area_academica():
     atividades = carregar_nome_atividades()
+    print(atividades)
     return render_template("area_academica.html", atividades=atividades)
 
 @app.route('/login', methods=['GET','POST'])
