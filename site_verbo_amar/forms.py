@@ -22,7 +22,6 @@ class FormCriarConta(FlaskForm):
                                    ],
                                    render_kw={'placeholder':'DD/MM/AAAA'})
 
-
     botao_submit_criarconta = SubmitField('Criar Conta')
 
     def validate_email(self, email):
