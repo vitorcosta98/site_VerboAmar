@@ -129,7 +129,8 @@ def cad_professor():
         database.session.add(usuario)
         database.session.commit()
         flash(f'Conta criada para o e-mail: {form_criarconta.email.data}', 'alert-success')
-        return redirect(url_for('home'))
+        return redirect(url_for('cadastro'))
+
     return render_template('cad_professor.html', form_criarconta=form_criarconta, info_sexo=['M', 'F'])
 
 
@@ -150,7 +151,7 @@ def cad_aluno():
         database.session.add(aluno)
         database.session.commit()
         flash(f'Cadastro do aluno: {form_cad_aluno.nome_completo.data} concluído com sucesso!', 'alert-success')
-        return redirect(url_for('home'))
+        return redirect(url_for('cadastro'))
     return render_template('cad_aluno.html', form_cad_aluno=form_cad_aluno, info_sexo=['M', 'F'])
 
 
@@ -175,7 +176,7 @@ def cad_atividade():
         database.session.add(ativ)
         database.session.commit()
         flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
-        return redirect(url_for('home'))
+        return redirect(url_for('cadastro'))
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
 
 
@@ -244,7 +245,7 @@ def cad_turma():
         database.session.commit()
 
         flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
-        return redirect(url_for('home'))
+        return redirect(url_for('cadastro'))
 
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
