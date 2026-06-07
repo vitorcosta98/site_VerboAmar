@@ -1,11 +1,3 @@
 *{
     font-family:'Poppins', sans-serif;
 }
-
-.card-body
-{
-    font-size: 10px;
-    letter-spacing: .1em;
-    height: 250px;
-    width: 200px;
-}
