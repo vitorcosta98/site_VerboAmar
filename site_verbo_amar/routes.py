@@ -7,12 +7,16 @@ import secrets
 import os
 from datetime import datetime
 
-@app.route("/")
+
+@app.route("/home", methods=['POST','GET'])
+@login_required
 def home():
-    return render_template("home.html")
+    nome_usuario = current_user
+
+    return render_template("home.html", nome_usuario=nome_usuario)
 
 
-@app.route("/pag_inicial")
+@app.route("/")
 def pag_inicial():
     return render_template("pag_inicial.html")
 
@@ -25,7 +29,7 @@ def carregar_nome_atividades():
                               "dias_aula":ativ.dias_aula.replace(";",' - '),
                               "turmas":0,
                               "professores":[],
-                              "alunos":[],
+                              "alunos":0,
                               "n_professores":0}
 
     return dict_ativ
@@ -38,9 +42,12 @@ def carregar_turmas(dict_ativ):
         for id in turmas:
             if ativ == id.id_atividade:
                 dict_ativ[ativ]['turmas'] += 1
+                total_alunos = len(id.id_aluno) - id.id_aluno.count(';')
+                dict_ativ[ativ]['alunos'] += total_alunos
                 if not id.id_professor in dict_ativ[ativ]['professores']:
                     dict_ativ[ativ]['professores'].append(id.id_professor)
                     dict_ativ[ativ]['n_professores'] +=1
+                
 
     return dict_ativ
 
@@ -52,6 +59,7 @@ def area_academica():
     teste = carregar_turmas(atividades)
     print(teste)
     return render_template("area_academica.html", atividades=atividades)
+
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -96,7 +104,7 @@ def login():
 def sair():
     logout_user()
     flash(f'Logout Feito com Sucesso', 'alert-success')
-    return redirect(url_for('home'))
+    return redirect(url_for('pag_inicial'))
 
 
 @app.route('/cadastro')
