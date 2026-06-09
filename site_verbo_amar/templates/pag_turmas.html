@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem;">
+    <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0;">Página de Turmas de {{nome_atividade}}</h1>
+</div>
+<hr>
+<div class="container">
+    <form method="POST" action="" id="nome_turma" class="border p-4 mt-2">
+        <fieldset>
+            {% for turma in turmas %}
+                <a style="text-decoration:none" href="#">
+                    <p>{{turma.nome_turma}}</p>
+                </a>
+            {% endfor %}
+        </fieldset>
+    </form>
+</div>
+
+{% endblock %}

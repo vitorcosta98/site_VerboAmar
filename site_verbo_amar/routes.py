@@ -56,8 +56,7 @@ def carregar_turmas(dict_ativ):
 @login_required
 def area_academica():
     atividades = carregar_nome_atividades()
-    teste = carregar_turmas(atividades)
-    print(teste)
+    atividades = carregar_turmas(atividades)
     return render_template("area_academica.html", atividades=atividades)
 
 
@@ -252,3 +251,11 @@ def cad_turma():
                            atividades=atividades,
                            professores=professores,
                            alunos=alunos)
+
+
+@app.route("/area-academica/turmas/<nome>", methods=['GET', 'POST'])
+@login_required
+def exibir_turmas(nome):
+    atividade = Atividade.query.filter_by(atividade=nome).first_or_404()
+    turmas = Turma.query.filter_by(id_atividade=atividade.id).all() 
+    return render_template('pag_turmas.html', nome_atividade=atividade.atividade, turmas=turmas)
