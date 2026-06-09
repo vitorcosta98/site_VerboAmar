@@ -2,9 +2,11 @@
 
 {% block body %}
 
-
+<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem;">
+    <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0;">Página de Turmas de {{nome_atividade}}</h1>
+</div>
+<hr>
 <div class="container">
-    <h1>Página de Turmas de {{nome_atividade}}</h1>
     <form method="POST" action="" id="nome_turma" class="border p-4 mt-2">
         <fieldset>
             {% for turma in turmas %}
@@ -14,7 +16,6 @@
             {% endfor %}
         </fieldset>
     </form>
-
 </div>
 
 {% endblock %}

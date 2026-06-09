@@ -56,6 +56,7 @@ def carregar_turmas(dict_ativ):
 @login_required
 def area_academica():
     atividades = carregar_nome_atividades()
+    atividades = carregar_turmas(atividades)
     return render_template("area_academica.html", atividades=atividades)
 
 
