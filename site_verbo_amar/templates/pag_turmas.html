@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+<div class="container">
+    <h1>Página de Turmas de {{nome_atividade}}</h1>
+    <form method="POST" action="" id="nome_turma" class="border p-4 mt-2">
+        <fieldset>
+            {% for turma in turmas %}
+                <p>{{turma}}</p>
+            {% endfor %}
+        </fieldset>
+
+
+    </form>
+        
+
+
+</div>
+
+{% endblock %}
