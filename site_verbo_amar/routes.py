@@ -252,8 +252,9 @@ def cad_turma():
                            alunos=alunos)
 
 
-@app.route("/area-academica/turmas", methods=['GET', 'POST'])
+@app.route("/area-academica/turmas/<nome>", methods=['GET', 'POST'])
 @login_required
 def exibir_turmas(nome):
-    nome_atividade = Atividade.query.get(nome) 
-    return render_template('pag_turmas.html', nome_atividade=nome_atividade)
+    atividade = Atividade.query.filter_by(atividade=nome).first_or_404()
+    turmas = Turma.query.filter_by(id_atividade=atividade.id).all() 
+    return render_template('pag_turmas.html', nome_atividade=atividade.atividade, turmas=turmas)

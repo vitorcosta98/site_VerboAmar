@@ -8,14 +8,12 @@
     <form method="POST" action="" id="nome_turma" class="border p-4 mt-2">
         <fieldset>
             {% for turma in turmas %}
-                <p>{{turma}}</p>
+                <a style="text-decoration:none" href="#">
+                    <p>{{turma.nome_turma}}</p>
+                </a>
             {% endfor %}
         </fieldset>
-
-
     </form>
-        
-
 
 </div>
 
