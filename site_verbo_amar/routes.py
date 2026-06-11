@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
-from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma
+from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma, FormChamada
 from site_verbo_amar.models import Usuario, Aluno, Atividade, Turma
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -190,8 +190,9 @@ def carregar_chamada(nome_turma):
     turma = Turma.query.filter_by(nome_turma=nome_turma).first_or_404()
     lista_alunos = list(turma.id_aluno)
     print(lista_alunos)
+    form_chamada = FormChamada()
 
-    return render_template('pag_chamada.html', nome_turma=nome_turma)
+    return render_template('pag_chamada.html', nome_turma=nome_turma, form_chamada=form_chamada)
     
 
 def carregar_nome_atividades():
