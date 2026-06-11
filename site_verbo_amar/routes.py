@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
-from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma
+from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma, FormChamada
 from site_verbo_amar.models import Usuario, Aluno, Atividade, Turma
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -19,37 +19,6 @@ def home():
 @app.route("/")
 def pag_inicial():
     return render_template("pag_inicial.html")
-
-
-def carregar_nome_atividades():
-    dict_ativ = {}
-    atividades = Atividade.query.order_by(Atividade.atividade.asc()).all()
-    for ativ in atividades:
-        dict_ativ[ativ.id] = {"nome_atividade":ativ.atividade,
-                              "dias_aula":ativ.dias_aula.replace(";",' - '),
-                              "turmas":0,
-                              "professores":[],
-                              "alunos":0,
-                              "n_professores":0}
-
-    return dict_ativ
-
-
-def carregar_turmas(dict_ativ):
-    turmas = Turma.query.order_by(Turma.id_atividade.asc()).all()
-    
-    for ativ in dict_ativ:
-        for id in turmas:
-            if ativ == id.id_atividade:
-                dict_ativ[ativ]['turmas'] += 1
-                total_alunos = len(id.id_aluno) - id.id_aluno.count(';')
-                dict_ativ[ativ]['alunos'] += total_alunos
-                if not id.id_professor in dict_ativ[ativ]['professores']:
-                    dict_ativ[ativ]['professores'].append(id.id_professor)
-                    dict_ativ[ativ]['n_professores'] +=1
-                
-
-    return dict_ativ
 
 
 @app.route("/area-academica", methods=['POST','GET'])
@@ -154,15 +123,6 @@ def cad_aluno():
     return render_template('cad_aluno.html', form_cad_aluno=form_cad_aluno, info_sexo=['M', 'F'])
 
 
-def dias_cursos(form):
-    lista_dias = []
-    for campo in form:
-        if "_feira" in campo.name or campo.name in ('sabado','doming'):
-            if campo.data:
-                lista_dias.append(campo.label.text)
-    return ";".join(lista_dias)
-
-
 @app.route('/cadastro/cad_atividade', methods=['GET','POST'])
 @login_required
 def cad_atividade():
@@ -177,43 +137,6 @@ def cad_atividade():
         flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
         return redirect(url_for('cadastro'))
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
-
-
-def carregar_atividades():
-    atividades = Atividade.query.order_by(Atividade.id.asc())
-    return atividades
-
-
-def carregar_professores():
-    professores = Usuario.query.order_by(Usuario.username.asc())
-    return professores
-
-
-def carregar_alunos():
-    alunos = Aluno.query.order_by(Aluno.nome_completo.asc())
-    return alunos
-
-
-def id_atividade(nome_atividade):
-    atividade = Atividade.query.filter_by(atividade=nome_atividade).first()
-    id = atividade.id
-    return id
-
-
-def id_professor(nome_professor):
-    professor = Usuario.query.filter_by(username=nome_professor).first()
-    id_professor = professor.id
-    return id_professor  
-
-
-def id_aluno(lista_aluno):
-    lista_id = []
-    for aluno in lista_aluno:
-        mat_aluno = Aluno.query.filter_by(nome_completo=aluno).first()
-        id_aluno = str(mat_aluno.id)
-        lista_id.append(id_aluno)
-
-    return ";".join(lista_id)
 
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
@@ -259,3 +182,91 @@ def exibir_turmas(nome):
     atividade = Atividade.query.filter_by(atividade=nome).first_or_404()
     turmas = Turma.query.filter_by(id_atividade=atividade.id).all() 
     return render_template('pag_turmas.html', nome_atividade=atividade.atividade, turmas=turmas)
+
+
+@app.route("/area-academica/turmas/chamada/<nome_turma>", methods=['GET','POST'])
+@login_required
+def carregar_chamada(nome_turma):
+    turma = Turma.query.filter_by(nome_turma=nome_turma).first_or_404()
+    lista_alunos = list(turma.id_aluno)
+    print(lista_alunos)
+    form_chamada = FormChamada()
+
+    return render_template('pag_chamada.html', nome_turma=nome_turma, form_chamada=form_chamada)
+    
+
+def carregar_nome_atividades():
+    dict_ativ = {}
+    atividades = Atividade.query.order_by(Atividade.atividade.asc()).all()
+    for ativ in atividades:
+        dict_ativ[ativ.id] = {"nome_atividade":ativ.atividade,
+                              "dias_aula":ativ.dias_aula.replace(";",' - '),
+                              "turmas":0,
+                              "professores":[],
+                              "alunos":0,
+                              "n_professores":0}
+
+    return dict_ativ
+
+
+def carregar_turmas(dict_ativ):
+    turmas = Turma.query.order_by(Turma.id_atividade.asc()).all()
+    
+    for ativ in dict_ativ:
+        for id in turmas:
+            if ativ == id.id_atividade:
+                dict_ativ[ativ]['turmas'] += 1
+                total_alunos = len(id.id_aluno) - id.id_aluno.count(';')
+                dict_ativ[ativ]['alunos'] += total_alunos
+                if not id.id_professor in dict_ativ[ativ]['professores']:
+                    dict_ativ[ativ]['professores'].append(id.id_professor)
+                    dict_ativ[ativ]['n_professores'] +=1
+                
+
+    return dict_ativ
+
+
+def dias_cursos(form):
+    lista_dias = []
+    for campo in form:
+        if "_feira" in campo.name or campo.name in ('sabado','doming'):
+            if campo.data:
+                lista_dias.append(campo.label.text)
+    return ";".join(lista_dias)
+
+
+def carregar_atividades():
+    atividades = Atividade.query.order_by(Atividade.id.asc())
+    return atividades
+
+
+def carregar_professores():
+    professores = Usuario.query.order_by(Usuario.username.asc())
+    return professores
+
+
+def carregar_alunos():
+    alunos = Aluno.query.order_by(Aluno.nome_completo.asc())
+    return alunos
+
+
+def id_atividade(nome_atividade):
+    atividade = Atividade.query.filter_by(atividade=nome_atividade).first()
+    id = atividade.id
+    return id
+
+
+def id_professor(nome_professor):
+    professor = Usuario.query.filter_by(username=nome_professor).first()
+    id_professor = professor.id
+    return id_professor  
+
+
+def id_aluno(lista_aluno):
+    lista_id = []
+    for aluno in lista_aluno:
+        mat_aluno = Aluno.query.filter_by(nome_completo=aluno).first()
+        id_aluno = str(mat_aluno.id)
+        lista_id.append(id_aluno)
+
+    return ";".join(lista_id)

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem;">
+    <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0;">Lista de Chamada da {{nome_turma}}</h1>
+</div>
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form method="POST", action="" class="border p-4 mt-2">
+                {{form_chamada.csrf_token}}
+                <fieldset>
+                    <div class="form-group">
+                        {{form_chamada.data_atual.label(class="form-control-label")}}
+                        {% if form_chamada.data_atual.errors %}
+                            {{form_chamada.data_atual(class='form-control is-invalid')}}
+                    </div>
+                    <div class='invalid-feedback'>
+                        {% for erro in form_chamada.data_atual.errors %}
+                            {{erro}}
+                        {% endfor %}
+                    </div>
+                        {% else %}
+                            {{form_chamada.data_atual(class="form-control",placeholder='DD/MM/AAAA')}}
+                        {% endif %}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

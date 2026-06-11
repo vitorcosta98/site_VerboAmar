@@ -92,3 +92,12 @@ class FormLogin(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired(), Length(6,20)])
     lembrar_dados = BooleanField('Lembrar Dados')
     botao_submit_login = SubmitField('Fazer Login')
+
+
+class FormChamada(FlaskForm):
+    data_atual = StringField("Data da Aula: ", validators=[DataRequired(),
+                                                           Regexp(r'^\d{2}/\d{2}/\d{4}',
+                                                                  message="Use o formato DD/MM/AAAA")],
+                                                                  render_kw={"placeholder":"DD/MM/AAAA"},
+                                                            default=lambda: datetime.now().strftime("%d/%m/%Y"))
+    
