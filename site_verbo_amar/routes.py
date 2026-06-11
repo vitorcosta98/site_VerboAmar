@@ -184,14 +184,14 @@ def exibir_turmas(nome):
     return render_template('pag_turmas.html', nome_atividade=atividade.atividade, turmas=turmas)
 
 
-@app.route("/area-academica/turmas/<nome_turma>", method=['GET','POST'])
+@app.route("/area-academica/turmas/chamada/<nome_turma>", methods=['GET','POST'])
 @login_required
 def carregar_chamada(nome_turma):
     turma = Turma.query.filter_by(nome_turma=nome_turma).first_or_404()
     lista_alunos = list(turma.id_aluno)
     print(lista_alunos)
 
-    return render_template('pag_chamada', nome_turma=nome_turma)
+    return render_template('pag_chamada.html', nome_turma=nome_turma)
     
 
 def carregar_nome_atividades():
