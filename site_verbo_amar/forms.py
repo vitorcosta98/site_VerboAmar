@@ -101,4 +101,6 @@ class FormChamada(FlaskForm):
                                                                   render_kw={"placeholder":"DD/MM/AAAA"},
                                                             default=lambda: datetime.now().strftime("%d/%m/%Y"))
     alunos = BooleanField("Alunos:",)
+
+    botao_submit_chamada = SubmitField("Confirmar Chamada")
     
