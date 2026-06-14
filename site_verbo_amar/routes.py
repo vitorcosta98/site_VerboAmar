@@ -193,9 +193,7 @@ def carregar_chamada(nome_turma):
         if id == ";":
             lista_id_alunos.remove(id)
 
-    print(lista_id_alunos)
     lista_nomes_alunos = carregar_nomes_alunos(lista_id_alunos)
-    print(lista_nomes_alunos)
 
     form_chamada = FormChamada()
 
