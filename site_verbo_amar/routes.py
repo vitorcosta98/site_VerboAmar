@@ -189,6 +189,7 @@ def exibir_turmas(nome):
 def carregar_chamada(nome_turma):
     turma = Turma.query.filter_by(nome_turma=nome_turma).first_or_404()
     lista_alunos = list(turma.id_aluno)
+    lista_alunos.remove(';')
     print(lista_alunos)
     form_chamada = FormChamada()
 
