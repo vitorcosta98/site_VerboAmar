@@ -41,4 +41,10 @@ class Turma(database.Model):
     id_aluno = database.Column(database.Integer, nullable=False)
     
 
+class ListaAulas(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    data_aula = database.Column(database.DateTime, nullable=False)
+    id_professor = database.Column(database.Integer, nullable=False)
+    presente = database.Column(database.Integer, nullable=False)
+    faltou = database.Column(database.Integer, nullable=False)
 

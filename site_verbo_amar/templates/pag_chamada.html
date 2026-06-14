@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem;">
+<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem; padding-top: 2rem;">
     <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0;">Lista de Chamada da {{nome_turma}}</h1>
 </div>
 <hr>
@@ -12,6 +12,7 @@
         <div class="col">
             <form method="POST", action="" class="border p-4 mt-2">
                 {{form_chamada.csrf_token}}
+
                 <fieldset>
                     <div class="form-group">
                         {{form_chamada.data_atual.label(class="form-control-label")}}
@@ -30,26 +31,33 @@
                     <p></p>
                     <label>Lista de Chamada</label>
                     <p></p>
-                        <div class="row g-1">
-                            <div class="col">
-                                <label>Nome do Aluno</label>
+                        
+                    <div class="row g-1">
+                        <div class="col">
+                            <label>Nome do Aluno</label>
 
-                                <ul class="list-group">
-                                    {% for aluno in lista_nomes_alunos %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span style="width: 45%">{{aluno}}</span>
-                                            <span style="width: 10%" class="text-center">
-                                                <input class="form-check-input" type="checkbox">
-                                            </span>
-                                            <span style="width: 45%"></span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                             <div class="col">
-                            </div>
-                        </div>    
+                            <ul class="list-group">
+                                {% for aluno in lista_nomes_alunos %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span style="width: 45%">{{aluno[0]}}</span>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" 
+                                            type="checkbox" name="aluno" id="{{aluno}}_presente" value="{{aluno[1]}}|presente">
+                                            <label class="form-control-label">Presente</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" name="aluno" id="{{aluno}}_faltou" value="{{aluno[1]}}|faltou">
+                                            <label class="form-control-label">Faltou</label>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                            <div class="col">
+                        </div>
+                    </div>
                 </fieldset>
+            {{form_chamada.botao_submit_chamada(class="btn btn-primary mt-2")}}
             </form>
         </div>
     </div>

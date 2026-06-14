@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
 from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma, FormChamada
-from site_verbo_amar.models import Usuario, Aluno, Atividade, Turma
+from site_verbo_amar.models import Usuario, Aluno, Atividade, Turma, ListaAulas
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -155,7 +155,6 @@ def cad_turma():
         id_ativ = id_atividade(form_ativ)
         id_prof = id_professor(form_prof)
         id_alu = id_aluno(form_alunos)
-        print(id_alu) 
         
         turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
                       id_atividade=id_ativ,
@@ -197,6 +196,29 @@ def carregar_chamada(nome_turma):
 
     form_chamada = FormChamada()
 
+    if form_chamada.validate_on_submit() and "botao_submit_chamada" in request.form:
+        data_aula = datetime.strptime(form_chamada.data_atual.data, '%d/%m/%Y')
+        presenca = request.form.getlist("aluno")
+        lista_presente=[]
+        lista_faltou = []
+
+        for p in presenca:
+            i = p.index('|')
+            if "presente" in p:
+                presente= p[:i]
+                lista_presente.append(presente)
+            elif "faltou" in p:
+                faltou = p[:i]
+                lista_faltou.append(faltou)
+        
+        presenca = ListaAulas(id_professor=current_user.id,
+                              data_aula=data_aula,
+                              presente=";".join(lista_presente),
+                              faltou=";".join(lista_faltou))
+        
+        database.session.add(presenca)
+        database.session.commit()
+
     return render_template('pag_chamada.html',
                            nome_turma=nome_turma,
                            form_chamada=form_chamada,
@@ -209,7 +231,7 @@ def carregar_nomes_alunos(lista_id_alunos):
     for id in lista_id_alunos:
         aluno = Aluno.query.filter_by(id=id).first_or_404()
         if aluno:
-            lista_nomes_alunos.append(aluno.nome_completo)
+            lista_nomes_alunos.append([aluno.nome_completo,aluno.id])
     
     return lista_nomes_alunos
 
