@@ -100,4 +100,5 @@ class FormChamada(FlaskForm):
                                                                   message="Use o formato DD/MM/AAAA")],
                                                                   render_kw={"placeholder":"DD/MM/AAAA"},
                                                             default=lambda: datetime.now().strftime("%d/%m/%Y"))
+    alunos = BooleanField("Alunos:",)
     
