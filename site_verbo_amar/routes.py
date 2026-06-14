@@ -188,13 +188,33 @@ def exibir_turmas(nome):
 @login_required
 def carregar_chamada(nome_turma):
     turma = Turma.query.filter_by(nome_turma=nome_turma).first_or_404()
-    lista_alunos = list(turma.id_aluno)
-    lista_alunos.remove(';')
-    print(lista_alunos)
+    lista_id_alunos = list(turma.id_aluno)
+    for id in lista_id_alunos:
+        if id == ";":
+            lista_id_alunos.remove(id)
+
+    print(lista_id_alunos)
+    lista_nomes_alunos = carregar_nomes_alunos(lista_id_alunos)
+    print(lista_nomes_alunos)
+
     form_chamada = FormChamada()
 
-    return render_template('pag_chamada.html', nome_turma=nome_turma, form_chamada=form_chamada)
+    return render_template('pag_chamada.html',
+                           nome_turma=nome_turma,
+                           form_chamada=form_chamada,
+                           lista_nomes_alunos=lista_nomes_alunos)
     
+
+def carregar_nomes_alunos(lista_id_alunos):
+    lista_nomes_alunos = []
+
+    for id in lista_id_alunos:
+        aluno = Aluno.query.filter_by(id=id).first_or_404()
+        if aluno:
+            lista_nomes_alunos.append(aluno.nome_completo)
+    
+    return lista_nomes_alunos
+
 
 def carregar_nome_atividades():
     dict_ativ = {}
@@ -230,7 +250,7 @@ def carregar_turmas(dict_ativ):
 def dias_cursos(form):
     lista_dias = []
     for campo in form:
-        if "_feira" in campo.name or campo.name in ('sabado','doming'):
+        if "_feira" in campo.name or campo.name in ('sabado','domingo'):
             if campo.data:
                 lista_dias.append(campo.label.text)
     return ";".join(lista_dias)
