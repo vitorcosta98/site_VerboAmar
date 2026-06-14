@@ -187,10 +187,13 @@ def exibir_turmas(nome):
 @login_required
 def carregar_chamada(nome_turma):
     turma = Turma.query.filter_by(nome_turma=nome_turma).first_or_404()
-    lista_id_alunos = list(turma.id_aluno)
-    for id in lista_id_alunos:
-        if id == ";":
-            lista_id_alunos.remove(id)
+    if type(turma.id_aluno) == int:
+        lista_id_alunos = [turma.id_aluno]
+    else:
+        lista_id_alunos = list(turma.id_aluno)
+        for id in lista_id_alunos:
+            if id == ";":
+                lista_id_alunos.remove(id)
 
     lista_nomes_alunos = carregar_nomes_alunos(lista_id_alunos)
 
@@ -257,7 +260,10 @@ def carregar_turmas(dict_ativ):
         for id in turmas:
             if ativ == id.id_atividade:
                 dict_ativ[ativ]['turmas'] += 1
-                total_alunos = len(id.id_aluno) - id.id_aluno.count(';')
+                if type(id.id_aluno) == int and id.id_aluno !=0:
+                    total_alunos =1
+                else:
+                    total_alunos = len(id.id_aluno) - id.id_aluno.count(';')
                 dict_ativ[ativ]['alunos'] += total_alunos
                 if not id.id_professor in dict_ativ[ativ]['professores']:
                     dict_ativ[ativ]['professores'].append(id.id_professor)
