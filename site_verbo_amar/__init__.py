@@ -5,10 +5,7 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 
-
-lista_projetos = ["Projeto1", "Projeto2"]
-
-app.config["SECRET_KEY"] = "123456"
+app.config["SECRET_KEY"] = "29cecf8afd6176f06bb3f55472d490d1"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 
 database = SQLAlchemy(app)

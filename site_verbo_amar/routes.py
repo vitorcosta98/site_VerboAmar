@@ -45,6 +45,8 @@ def login():
             else:
                 return redirect(url_for('home'))
         else:
+            form_login.senha.errors.append("E-mail ou senha incorretos.")
+            form_login.email.errors.append("E-mail ou senha incorretos.")
             flash(f'Falha no login. E-mail ou senha incorretos.', 'alert-danger')
 
 
