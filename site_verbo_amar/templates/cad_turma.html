@@ -24,7 +24,7 @@
       {% else %}
         {{form_cad_turma.nome_turma(class="form-control")}}
       {% endif %}
-    </fieldset>
+    
 
     <hr>
     <ul class="list-group">
@@ -41,34 +41,92 @@
     </ul>
 
     <hr>
-    <ul class="list-group">
-      {{form_cad_turma.professor.label(class='form-control-label')}}
-      {% for professor in professores %}
-        <li class="list-group-item">
-          <input class="form-check-input me-1" type="radio" 
-          name="professor"
-          value="{{professor.username}}"
-          id="{{professor.username}}>"
-          <label class="form-check-label" for="{{professor.username}}">{{professor.username}}</label>
-        </li>
-      {% endfor %}
-    </ul>
+      <div class="form-group">
+        <label for="nomeProfessor">Nome do Professor</label>
+        <input type="text" class="form-control" id="nomeProfessor" name="nomeProfessor" placeholder="Digite o nome do Professor:">
+        <label for="dataProfessor">Data de Nascimento</label>
+        <input type="text" class="form-control" id="dataProfessor" name="dataProfessor" placeholder="Digite no formato DD/MM/AAAA">
+        <p></p>
+
+        <label>Selecione o Sexo do Professor:</label>
+        <select name="generoProfessor" id="genero" required>
+          <option value="" disabled {% if not selected_gender %} selected{% endif %}>Selecione...</option>
+          <option value="masculino" {% if selected_gender =='masculino' %} selected {% endif %}>Masculino</option>
+          <option value="feminino" {% if selected_gender =='feminino' %} selected {% endif %}>Feminino</option>
+        </select>
+        </div>
 
     <hr>
-    <ul class="list-group">
-      {{form_cad_turma.alunos.label(class='form-control-label')}}
-      {% for aluno in alunos %}
-        <li class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" 
-          name="aluno"
-          value="{{aluno.nome_completo}}" id="{{aluno.nome_completo}}">
-          <label class="form-check-label" for="{{aluno.nome_completo}}">{{aluno.nome_completo}}</label>
-        </li>
-      {% endfor %}
-    </ul>
+    <div id="alunos-container">
+      <div class="aluno-entry mb-3" id="aluno-1">
+        <div class="form-group">
+          <label>Nome do Aluno</label>
+          <input type="text" class="form-control" name="nomeAluno[]" placeholder="Digite o nome do Aluno">
+          <label>Data de Nascimento</label>
+          <input type="text" class="form-control mt-1" name="dataAluno[]" placeholder="Digite no formato DD/MM/AAAA">
+          
+          <label>Selecione o Sexo do Aluno:</label>
+          <select name="generoAluno[]" id="genero" required>
+            <option value="" disabled {% if not selected_gender %} selected{% endif %}>Selecione...</option>
+            <option value="masculino" {% if selected_gender =='masculino' %} selected {% endif %}>Masculino</option>
+            <option value="feminino" {% if selected_gender =='feminino' %} selected {% endif %}>Feminino</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-2 mb-3">
+      <button type="button" class="btn btn-success btn-sm" id="add-aluno">
+        + Adicionar Aluno
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" id="remove-aluno">
+        - Remover Último Aluno
+      </button>
+    </div>
 
+    <hr>   
+    </fieldset>
     {{form_cad_turma.botao_submit_turma(class='btn btn-primary mt-2')}}
   </form>
 </div>
+
+<script>
+  let alunoCount=1;
+
+  document.getElementById('add-aluno').addEventListener('click', function () {
+    alunoCount++;
+    const container = document.getElementById('alunos-container');
+
+    const newEntry = document.createElement('div');
+    newEntry.classList.add('aluno-entry', 'mb-3');
+    newEntry.id = `aluno-${alunoCount}`;
+    
+    newEntry.innerHTML = `
+      <hr class='mt-0'>
+      <div class="form-group">
+        <label>Nome do Aluno</label>
+        <input type="text" class='form-control' name="nomeAluno[]" placeholder="Digite o nome do Aluno">
+        <label>Data de Nascimento</label>
+        <input type="text" class='form-control' name="dataAluno[]" placeholder="Digite no formato DD/MM/AAAA">
+        <label>Selecione o Sexo do Aluno:</label>
+        <select name="generoAluno[]" id="genero" required>
+          <option value="" disabled {% if not selected_gender %} selected{% endif %}>Selecione...</option>
+          <option value="masculino" {% if selected_gender =='masculino' %} selected {% endif %}>Masculino</option>
+          <option value="feminino" {% if selected_gender =='feminino' %} selected {% endif %}>Feminino</option>
+        </select>
+      </div>
+    `;
+    container.appendChild(newEntry);
+  });
+
+  document.getElementById('remove-aluno').addEventListener('click', function(){
+    if (alunoCount>1) {
+      const lastEntry = document.getElementById(`aluno-${alunoCount}`);
+      lastEntry.remove();
+      alunoCount--;
+    }
+  });
+</script>
+
 
 {% endblock %}

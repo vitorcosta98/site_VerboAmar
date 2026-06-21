@@ -81,9 +81,7 @@ class FormCadAtividade(FlaskForm):
 
 class FormTurma(FlaskForm):
     nome_turma = StringField("Nome da Turma:", validators=[DataRequired()])
-    atividade = BooleanField("Atividade:", )
-    professor = BooleanField("Professor:",)
-    alunos = BooleanField("Alunos:", )
+    atividade = StringField("Atividade:", validators=[DataRequired()])
     botao_submit_turma = SubmitField("Cadastrar Turma")
 
 
