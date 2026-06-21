@@ -43,16 +43,18 @@
     <hr>
       <div class="form-group">
         <label for="nomeProfessor">Nome do Professor</label>
-        <input type="text" class="form-control" id="nomeProfessor" placeholder="Digite o nome do Professor:">
+        <input type="text" class="form-control" id="nomeProfessor" name="nomeProfessor" placeholder="Digite o nome do Professor:">
         <label for="dataProfessor">Data de Nascimento</label>
-        <input type="text" class="form-control" id="dataProfessor" placeholder="Digite a Data de Nascimento:">
+        <input type="text" class="form-control" id="dataProfessor" name="dataProfessor" placeholder="Digite no formato DD/MM/AAAA">
         <p></p>
+
         <label>Selecione o Sexo do Professor:</label>
-          <input class="form-check-input" type="checkbox" value="masculino" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck1">Masculino</label>
-          <input class="form-check-input" type="checkbox" value="feminino" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck2">Feminino</label>
-      </div>
+        <select name="generoProfessor" id="genero" required>
+          <option value="" disabled {% if not selected_gender %} selected{% endif %}>Selecione...</option>
+          <option value="masculino" {% if selected_gender =='masculino' %} selected {% endif %}>Masculino</option>
+          <option value="feminino" {% if selected_gender =='feminino' %} selected {% endif %}>Feminino</option>
+        </select>
+        </div>
 
     <hr>
     <div id="alunos-container">
@@ -61,13 +63,14 @@
           <label>Nome do Aluno</label>
           <input type="text" class="form-control" name="nomeAluno[]" placeholder="Digite o nome do Aluno">
           <label>Data de Nascimento</label>
-          <input type="text" class="form-control mt-1" name="dataAluno[]" placeholder="Digite a data de Nascimento">
+          <input type="text" class="form-control mt-1" name="dataAluno[]" placeholder="Digite no formato DD/MM/AAAA">
           
           <label>Selecione o Sexo do Aluno:</label>
-          <input class="form-check-input" type="checkbox" value="masculino" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck1">Masculino</label>
-          <input class="form-check-input" type="checkbox" value="feminino" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck2">Feminino</label>
+          <select name="generoAluno[]" id="genero" required>
+            <option value="" disabled {% if not selected_gender %} selected{% endif %}>Selecione...</option>
+            <option value="masculino" {% if selected_gender =='masculino' %} selected {% endif %}>Masculino</option>
+            <option value="feminino" {% if selected_gender =='feminino' %} selected {% endif %}>Feminino</option>
+          </select>
         </div>
       </div>
     </div>
@@ -104,12 +107,13 @@
         <label>Nome do Aluno</label>
         <input type="text" class='form-control' name="nomeAluno[]" placeholder="Digite o nome do Aluno">
         <label>Data de Nascimento</label>
-        <input type="text" class='form-control' name="dataAluno[]" placeholder="Digite o data de Nascimento">
+        <input type="text" class='form-control' name="dataAluno[]" placeholder="Digite no formato DD/MM/AAAA">
         <label>Selecione o Sexo do Aluno:</label>
-        <input class="form-check-input" type="checkbox" value="masculino" id="defaultCheck1">
-        <label class="form-check-label" for="defaultCheck1">Masculino</label>
-        <input class="form-check-input" type="checkbox" value="feminino" id="defaultCheck1">
-        <label class="form-check-label" for="defaultCheck2">Feminino</label>
+        <select name="generoAluno[]" id="genero" required>
+          <option value="" disabled {% if not selected_gender %} selected{% endif %}>Selecione...</option>
+          <option value="masculino" {% if selected_gender =='masculino' %} selected {% endif %}>Masculino</option>
+          <option value="feminino" {% if selected_gender =='feminino' %} selected {% endif %}>Feminino</option>
+        </select>
       </div>
     `;
     container.appendChild(newEntry);

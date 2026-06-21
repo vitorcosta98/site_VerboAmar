@@ -45,3 +45,9 @@ class ListaAulas(database.Model):
     presente = database.Column(database.Integer, nullable=False)
     faltou = database.Column(database.Integer, nullable=False)
 
+class Professor(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    nome_completo = database.Column(database.String, nullable=False)
+    data_nascimento = database.Column(database.DateTime, nullable=False)
+    sexo = database.Column(database.String, nullable=False)
+    
