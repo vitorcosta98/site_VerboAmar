@@ -146,8 +146,6 @@ def cad_atividade():
 def cad_turma():
     form_cad_turma = FormTurma()
     atividades = carregar_atividades()
-    professores = carregar_professores()
-    alunos = carregar_alunos()
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
         form_ativ = request.form.get('atividade')
@@ -172,9 +170,7 @@ def cad_turma():
 
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
-                           atividades=atividades,
-                           professores=professores,
-                           alunos=alunos)
+                           atividades=atividades)
 
 
 @app.route("/area-academica/turmas/<nome>", methods=['GET', 'POST'])
