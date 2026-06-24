@@ -150,6 +150,15 @@ def carregar_id_professor(nome, data_nascimento):
     return id
 
 
+def carregar_id_aluno(nome, data_nascimento):
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_aluno:
+        id = id_aluno.id
+    else:
+        id = None
+    return id
+
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 @login_required
 def cad_turma():
@@ -185,7 +194,44 @@ def cad_turma():
         except:
             flash("Por favor, digite uma data válida!", 'alert-danger')
         
+        lista_valores_alunos = tuple(zip(lista_alunos, lista_data_alunos, lista_g_alunos))
+        lista_id_alunos = []
+        
+        for a in lista_valores_alunos:
+            try:
+                data_a = datetime.strptime(a[1], "%d/%m/%Y")
+                id_aluno = carregar_id_aluno(nome=a[0], data_nascimento=data_a)
 
+                if id_aluno:
+                    print(id_aluno)
+                else:
+                    aluno = Aluno(nome_completo=a[0],
+                                        data_nascimento=data_a,
+                                        sexo=a[2])
+                    
+                    database.session.add(aluno)
+                    database.session.commit()
+
+                    id_aluno = carregar_id_professor(nome=a[0], data_nascimento=data_a)
+                    lista_id_alunos.append[id_aluno]     
+            except:
+                flash("Por favor, digite uma data válida!", 'alert-danger')
+
+        flash("Alunos cadastrados", 'alert-success')
+    
+    id_atividade = id_atividade(form_cad_turma.atividade)
+    
+    ids_alunos = ";".join(lista_id_alunos)
+
+    turma = Turma(nome_turma=form_cad_turma.nome_turma,
+                  id_professor=id_professor,
+                  id_atividade=id_atividade,
+                  id_aluno = ids_alunos
+                  )
+    database.session.add(turma)
+    database.session.commit()
+    flash("Turma Cadastrada!", 'alert-success')
+        
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
                            atividades=atividades)
