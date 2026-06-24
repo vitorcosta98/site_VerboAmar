@@ -166,42 +166,26 @@ def cad_turma():
     atividades = carregar_atividades()
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
-        nome_professor = request.form.get('nomeProfessor')
-        data_professor = request.form.get('dataProfessor')
-        gen_professor = request.form.get('generoProfessor')
-
-        lista_alunos = request.form.getlist('nomeAluno[]')
-        lista_data_alunos = request.form.getlist("dataAluno[]")
-        lista_g_alunos = request.form.getlist('generoAluno[]')
-
-        try:
-            data_p = datetime.strptime(data_professor, "%d/%m/%Y")
-            id_professor = carregar_id_professor(nome=nome_professor, data_nascimento=data_p)
-
-            if id_professor:
-                print(id_professor)
-            else:
-                professor = Professor(nome_completo=nome_professor,
-                                    data_nascimento=data_p,
-                                    sexo=gen_professor)
-                
-                database.session.add(professor)
-                database.session.commit()
-
-                id_professor = carregar_id_professor(nome=nome_professor, data_nascimento=data_p)
-
-                flash(f"Professor {nome_professor} cadastrado!", 'alert-success')      
-        except:
-            flash("Por favor, digite uma data válida!", 'alert-danger')
+        form_ativ = request.form.get('atividade')
+        form_prof = request.form.get('professor')
+        form_alunos = request.form.getlist("aluno")
         
-        lista_valores_alunos = tuple(zip(lista_alunos, lista_data_alunos, lista_g_alunos))
-        lista_id_alunos = []
-        print(lista_valores_alunos)
-
-        for a in lista_valores_alunos:
-            print(a[0], a[1],a[2])
-
+        id_ativ = id_atividade(form_ativ)
+        id_prof = id_professor(form_prof)
+        id_alu = id_aluno(form_alunos)
         
+        turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
+                      id_atividade=id_ativ,
+                      id_professor=id_prof,
+                      id_aluno=id_alu,)
+        
+
+        database.session.add(turma)
+        database.session.commit()
+
+        flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
+        return redirect(url_for('cadastro'))
+
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
                            atividades=atividades)
