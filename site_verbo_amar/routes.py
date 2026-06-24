@@ -141,6 +141,15 @@ def cad_atividade():
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
 
 
+def carregar_id_professor(nome, data_nascimento):
+    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_professor:
+        id = id_professor.id
+    else:
+        id = None
+    return id
+
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 @login_required
 def cad_turma():
@@ -156,16 +165,23 @@ def cad_turma():
         lista_data_alunos = request.form.getlist("dataAluno[]")
         lista_g_alunos = request.form.getlist('generoAluno[]')
 
-        print(lista_alunos, lista_data_alunos, lista_g_alunos)
         try:
             data_p = datetime.strptime(data_professor, "%d/%m/%Y")
-            professor = Professor(nome_completo=nome_professor,
-                                  data_nascimento=data_p,
-                                  sexo=gen_professor)
-            
-            database.session.add(professor)
-            database.session.commit()
-            flash(f"Professor {nome_professor} cadastrado!", 'alert-success')      
+            id_professor = carregar_id_professor(nome=nome_professor, data_nascimento=data_p)
+
+            if id_professor:
+                print(id_professor)
+            else:
+                professor = Professor(nome_completo=nome_professor,
+                                    data_nascimento=data_p,
+                                    sexo=gen_professor)
+                
+                database.session.add(professor)
+                database.session.commit()
+
+                id_professor = carregar_id_professor(nome=nome_professor, data_nascimento=data_p)
+
+                flash(f"Professor {nome_professor} cadastrado!", 'alert-success')      
         except:
             flash("Por favor, digite uma data válida!", 'alert-danger')
         
