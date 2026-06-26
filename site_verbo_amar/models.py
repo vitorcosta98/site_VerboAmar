@@ -35,7 +35,7 @@ class Turma(database.Model):
     nome_turma = database.Column(database.String, nullable=False, unique=True)
     id_professor = database.Column(database.Integer,nullable=False)
     id_atividade = database.Column(database.Integer,nullable=False)
-    id_aluno = database.Column(database.Integer, nullable=False)
+    id_aluno = database.Column(database.String, nullable=False)
     
 
 class ListaAulas(database.Model):

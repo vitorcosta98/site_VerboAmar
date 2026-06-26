@@ -141,6 +141,24 @@ def cad_atividade():
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
 
 
+def carregar_id_professor(nome, data_nascimento):
+    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_professor:
+        id = id_professor.id
+    else:
+        id = None
+    return id
+
+
+def carregar_id_aluno(nome, data_nascimento):
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
+    if id_aluno:
+        id = id_aluno.id
+    else:
+        id = None
+    return id
+
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 @login_required
 def cad_turma():
@@ -149,26 +167,59 @@ def cad_turma():
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
         nome_professor = request.form.get('nomeProfessor')
-        data_professor = request.form.get('dataProfessor')
-        gen_professor = request.form.get('generoProfessor')
+        data_ani_prof = request.form.get('dataProfessor')
+        genero_prof = request.form.get('generoProfessor')
 
-        lista_alunos = request.form.getlist('nomeAluno[]')
-        lista_data_alunos = request.form.getlist("dataAluno[]")
-        lista_g_alunos = request.form.getlist('generoAluno[]')
-
-        print(lista_alunos, lista_data_alunos, lista_g_alunos)
         try:
-            data_p = datetime.strptime(data_professor, "%d/%m/%Y")
-            professor = Professor(nome_completo=nome_professor,
-                                  data_nascimento=data_p,
-                                  sexo=gen_professor)
-            
-            database.session.add(professor)
-            database.session.commit()
-            flash(f"Professor {nome_professor} cadastrado!", 'alert-success')      
+            data_prof = datetime.strptime(data_ani_prof, "%d/%m/%Y")
+            id_prof = carregar_id_professor(nome=nome_professor, data_nascimento=data_prof)
+            if id_prof == None:
+                cad_professor = Professor(
+                    nome_completo=nome_professor,
+                    data_nascimento=data_prof,
+                    sexo=genero_prof
+                )
+                database.session.add(cad_professor)
+                database.session.commit()
+                id_prof = carregar_id_professor(nome=nome_professor, data_nascimento=data_prof)   
+
         except:
-            flash("Por favor, digite uma data válida!", 'alert-danger')
+            flash("Falha ao cadastrar professor. Por favor, revise os campos digitados", "alert-danger")
         
+        l_nomesAlunos = request.form.getlist("nomeAluno[]")
+        l_datasAlunos = request.form.getlist("dataAluno[]")
+        l_generoAlunos= request.form.getlist("generoAluno[]")
+
+        l_regAlunos = tuple(zip(l_nomesAlunos,l_datasAlunos,l_generoAlunos))
+
+        l_idAlunos = []
+
+        for a in l_regAlunos:
+            try:
+                data_nasc_aluno = datetime.strptime(a[1], "%d/%m/%Y")
+                nome_aluno = a[0]
+                genero_aluno = a[2]
+                id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
+                if id_aluno == None:
+                    cad_aluno = Aluno(
+                        nome_completo = nome_aluno,
+                        sexo=genero_aluno,
+                        data_aniversario=data_nasc_aluno
+                    )
+                    database.session.add(cad_aluno)
+                    database.session.commit()
+
+                    id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
+                
+                l_idAlunos.append(id_aluno)
+            except Exception as e:
+                print(f"Erro {e}")
+                flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
+
+        print(l_idAlunos)
+        print(l_regAlunos)
+
+        flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
 
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
