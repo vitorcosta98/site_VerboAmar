@@ -151,7 +151,7 @@ def carregar_id_professor(nome, data_nascimento):
 
 
 def carregar_id_aluno(nome, data_nascimento):
-    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
     if id_aluno:
         id = id_aluno.id
     else:
@@ -166,25 +166,60 @@ def cad_turma():
     atividades = carregar_atividades()
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
-        form_ativ = request.form.get('atividade')
-        form_prof = request.form.get('professor')
-        form_alunos = request.form.getlist("aluno")
-        
-        id_ativ = id_atividade(form_ativ)
-        id_prof = id_professor(form_prof)
-        id_alu = id_aluno(form_alunos)
-        
-        turma = Turma(nome_turma=form_cad_turma.nome_turma.data,
-                      id_atividade=id_ativ,
-                      id_professor=id_prof,
-                      id_aluno=id_alu,)
-        
+        nome_professor = request.form.get('nomeProfessor')
+        data_ani_prof = request.form.get('dataProfessor')
+        genero_prof = request.form.get('generoProfessor')
 
-        database.session.add(turma)
-        database.session.commit()
+        try:
+            data_prof = datetime.strptime(data_ani_prof, "%d/%m/%Y")
+            id_prof = carregar_id_professor(nome=nome_professor, data_nascimento=data_prof)
+            if id_prof == None:
+                cad_professor = Professor(
+                    nome_completo=nome_professor,
+                    data_nascimento=data_prof,
+                    sexo=genero_prof
+                )
+                database.session.add(cad_professor)
+                database.session.commit()
+                id_prof = carregar_id_professor(nome=nome_professor, data_nascimento=data_prof)   
+
+        except:
+            flash("Falha ao cadastrar professor. Por favor, revise os campos digitados", "alert-danger")
+        
+        l_nomesAlunos = request.form.getlist("nomeAluno[]")
+        l_datasAlunos = request.form.getlist("dataAluno[]")
+        l_generoAlunos= request.form.getlist("generoAluno[]")
+
+        l_regAlunos = tuple(zip(l_nomesAlunos,l_datasAlunos,l_generoAlunos))
+
+        l_idAlunos = []
+
+        for a in l_regAlunos:
+            try:
+                data_nasc_aluno = datetime.strptime(a[1], "%d/%m/%Y")
+                nome_aluno = a[0]
+                genero_aluno = a[2]
+                id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
+                if id_aluno == None:
+                    cad_aluno = Aluno(
+                        nome_completo = nome_aluno,
+                        sexo=genero_aluno,
+                        data_aniversario=data_nasc_aluno
+                    )
+                    database.session.add(cad_aluno)
+                    database.session.commit()
+
+                    id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
+                
+                l_idAlunos.append(id_aluno)
+            except Exception as e:
+                print(f"Erro {e}")
+                flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
+
+        print(l_idAlunos)
+        print(l_regAlunos)
 
         flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
-        return redirect(url_for('cadastro'))
 
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
