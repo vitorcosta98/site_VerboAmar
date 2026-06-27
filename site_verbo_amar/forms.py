@@ -15,7 +15,7 @@ class FormCriarConta(FlaskForm):
     sexo = SelectField("Sexo", choices=[("",'Selecione...'), ('M',"M"),('F',"F")],validators=[DataRequired()])
     adm = BooleanField('Adm')
     professor = BooleanField('Professor')
-    data_nascimento = StringField('Data Aniversário',
+    data_nascimento = StringField('Data de Nascimento',
                                    validators=[
                                        DataRequired(),
                                        Regexp(r'^\d{2}/\d{2}/\d{4}',message="Use o formato DD/MM/AAAA")

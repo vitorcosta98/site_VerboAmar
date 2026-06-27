@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Faça Login ou Crie sua Conta para continuar</h1>
+<div class = "d-flex align-items-center gap-1", style="padding-left: 3rem;">
+    <img src="{{url_for('static', filename='login.png')}}" alt="study" height="100">
+    <h1>Faça Login ou Crie sua Conta para continuar</h1>
         <hr>
+</div>
+    <div class="container">
         <div class="row">
             <div class="col">
                 <form method="POST" action="" class="border p-4 mt-2">
@@ -121,7 +124,7 @@
                             {% endif %}
                         </div>
 
-                        <div class="form-group">
+                        <div data-tooltip="Cria Turmas, Cadastra Alunos, Professores e Atividades" class="form-group">
                             {{ form_criarconta.adm.label(class="form-check-label") }}
                             {% if form_criarconta.adm.errors %}
                                 {{ form_criarconta.adm(class='form-check-label is-invalid')}}
@@ -135,7 +138,7 @@
                             {% endif %}
                         </div>
 
-                        <div class="form-group">
+                        <div data-tooltip="Realiza Chamada das Turmas" class="form-group">
                             {{ form_criarconta.professor.label(class="form-check-label") }}
                             {% if form_criarconta.professor.errors %}
                                 {{ form_criarconta.professor(class='form-check-label is-invalid')}}                    
