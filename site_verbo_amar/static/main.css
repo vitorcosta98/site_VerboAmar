@@ -10,3 +10,49 @@
   background: #eee;
   padding: .25em;
 }
+
+#cards-cadastro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: left;
+  gap: 5%;
+  margin: 0vw auto 15vw 7vw;
+  width: 50%;
+}
+#cards-cadastro .card{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem 3rem 3rem;
+  margin-bottom: 1rem;
+  width: 15rem;
+  height: 15rem;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 2vh;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem 3rem 3rem;
+  margin-bottom: 1rem;
+  width: 20rem;
+  height: 20rem;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 2vh;
+}
+
+.card .content {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.card .button {
+  width: 100%;
+  border-radius: 2vh;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 1em 1.3em;
+  text-align: center;
+}

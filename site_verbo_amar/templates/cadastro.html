@@ -9,9 +9,7 @@
    
 </div>
 <hr>
-<div class="row" style="padding-left: 3rem;">
-    
-    <div class="col-sm-2 mb-2 mb-sm-0">
+<div id="cards-cadastro">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Atividades</h5>
@@ -19,16 +17,13 @@
         <a href="{{url_for('cad_atividade')}}" class="btn btn-primary">Nova Atividade</a>
       </div>
     </div>
-    </div>
 
-    <div class="col-sm-2 mb-2 mb-sm-0">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Turmas</h5>
         <img src="{{url_for('static', filename='turma_logo.jpeg')}}" alt="study" height="100">
         <a href="{{url_for('cad_turma')}}" class="btn btn-primary">Nova Turma</a>
       </div>
-    </div>
     </div>
 </div>  
 
