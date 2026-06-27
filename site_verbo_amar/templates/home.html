@@ -2,29 +2,31 @@
 
 {% block body %}
 
-<div class = "d-flex align-items-center justify-content-center gap-3">
+<div class = "d-flex align-items-center gap-1", style="padding-left: 4rem; margin-top: 2rem;">
     <div>
         <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0 0 1.5rem;">
             Bem-vindo(a), {{nome_usuario.username}}!
         </h1>
         <p style="font-size: 1.4rem;">Selecione uma das opções acima!</p>
+
+        {% if aniversariantes %}
+            <div class = "d-flex align-items-center gap-1", style="padding-left: 4rem; padding-top: 2rem;">
+                <img src="{{url_for('static', filename='aniversariantes.png')}}" alt="study" height="250">
+            </div>
+            <div class="multiline", style="padding-left: 4rem;">
+            {% for aniversariante in lista_aniversario_prof %}
+                <p style="font-size: 1.4rem;", style="padding-left: 4rem;">🎉Professor {{aniversariante}}!🎉</p>
+            {% endfor %}
+            {% for aniversariante in lista_aniversario_alun %}
+                <p style="font-size: 1.4rem;", style="padding-left: 4rem;">🎉Aluno {{aniversariante}}!🎉</p>
+            {% endfor %}
+            {% for aniversariante in lista_aniversario_adm %}
+                <p style="font-size: 1.4rem;", style="padding-left: 4rem;">🎉Senhor(a) {{aniversariante}}!🎉</p>
+            {% endfor %}
+            </div>  
+        {% endif %}
+        
     </div>
     <img src="{{url_for('static', filename='home_logo.png')}}" alt="study" height="400">
-
 </div>
-
-
-{% if not lista_aniversario.empty %}
-<p></p>
-<div class = "d-flex align-items-center justify-content-center gap-3">
-    <h2>Lista de aniversariantes!</h2>
-</div>
-    {% for aniversariante in lista_aniversario %}
-        <div class="d-flex align-items-center justify-content-center gap-3">
-            <p>{{aniversariante}}</p>
-        </div>
-    {% endfor %}
-    
-{% endif %}
-
 {% endblock %}
