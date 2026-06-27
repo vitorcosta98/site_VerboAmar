@@ -116,6 +116,24 @@ def cad_atividade():
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
 
 
+def carregar_id_professor(nome, data_nascimento):
+    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_professor:
+        id = id_professor.id
+    else:
+        id = None
+    return id
+
+
+def carregar_id_aluno(nome, data_nascimento):
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
+    if id_aluno:
+        id = id_aluno.id
+    else:
+        id = None
+    return id
+
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 @login_required
 def cad_turma():
@@ -145,7 +163,6 @@ def cad_turma():
 
         except:
             flash("Falha ao cadastrar professor. Por favor, revise os campos digitados", "alert-danger")
-            exit()
         
         l_nomesAlunos = request.form.getlist("nomeAluno[]")
         l_datasAlunos = request.form.getlist("dataAluno[]")
@@ -172,22 +189,13 @@ def cad_turma():
 
                     id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
                 
-                l_idAlunos.append(str(id_aluno))
+                l_idAlunos.append(id_aluno)
             except Exception as e:
+                print(f"Erro {e}")
                 flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
-                break
-        
-        id_aluno = ";".join(l_idAlunos)
 
-        nova_turma = Turma(
-            nome_turma=nome_turma,
-            id_professor=id_prof,
-            id_atividade = id_ativ,
-            id_aluno = id_aluno
-        )
-
-        database.session.add(nova_turma)
-        database.session.commit()
+        print(l_idAlunos)
+        print(l_regAlunos)
 
         flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
 
