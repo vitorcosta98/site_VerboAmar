@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, abort
 from site_verbo_amar import app, database, bcrypt
-from site_verbo_amar.forms import FormCriarConta, FormCadAluno,FormLogin, FormCadAtividade, FormTurma, FormChamada
+from site_verbo_amar.forms import FormCriarConta,FormLogin, FormCadAtividade, FormTurma, FormChamada
 from site_verbo_amar.models import Usuario, Aluno, Atividade, Turma, ListaAulas, Professor
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -12,8 +12,25 @@ from datetime import datetime
 @login_required
 def home():
     nome_usuario = current_user
+    lista_alunos,lista_professores = carregar_aniversarios()
 
-    return render_template("home.html", nome_usuario=nome_usuario)
+    data_atual = datetime.now()
+    data_atual = data_atual.strftime("%d/%m/%Y")
+
+    lista_aniversario = []
+
+    for a in lista_professores:
+        if a[1][:4] == data_atual[:4]:
+            lista_aniversario.append(a[0])
+    
+    for a in lista_alunos:
+        if a[1][:4] == data_atual[:4]:
+            lista_aniversario.append(a[0][:4])
+
+
+    return render_template("home.html",
+                           nome_usuario=nome_usuario,
+                           lista_aniversario=lista_aniversario)
 
 
 @app.route("/")
@@ -83,48 +100,6 @@ def cadastro():
     return render_template('cadastro.html')
 
 
-@app.route('/cadastro/cad_professor', methods=['GET','POST'])
-@login_required
-def cad_professor():
-    form_criarconta = FormCriarConta()
-    if form_criarconta.validate_on_submit() and 'botao_submit_criarconta' in request.form:
-        data_aniversario = datetime.strptime(form_criarconta.data_aniversario.data, '%d/%m/%Y')
-        senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
-        usuario = Usuario(username=form_criarconta.username.data,
-                          email=form_criarconta.email.data,
-                          senha=senha_cript, sexo=form_criarconta.sexo.data,
-                          adm=form_criarconta.adm.data, professor=form_criarconta.professor.data,
-                          data_aniversario=data_aniversario)
-        
-        database.session.add(usuario)
-        database.session.commit()
-        flash(f'Conta criada para o e-mail: {form_criarconta.email.data}', 'alert-success')
-        return redirect(url_for('cadastro'))
-
-    return render_template('cad_professor.html', form_criarconta=form_criarconta, info_sexo=['M', 'F'])
-
-
-@app.route('/cadastro/cad_aluno', methods=['GET','POST'])
-@login_required
-def cad_aluno():
-    form_cad_aluno = FormCadAluno()
-    if form_cad_aluno.validate_on_submit() and 'botao_submit_cad' in request.form:
-        data_aniversario = datetime.strptime(form_cad_aluno.data_aniversario.data, '%d/%m/%Y')
-        aluno = Aluno(nome_completo=form_cad_aluno.nome_completo.data,
-                        cpf = form_cad_aluno.cpf.data,
-                        sexo = form_cad_aluno.sexo.data,
-                        nome_mae= form_cad_aluno.nome_mae.data,
-                        nome_pai = form_cad_aluno.nome_pai.data,
-                        data_aniversario = data_aniversario
-                        )
-        
-        database.session.add(aluno)
-        database.session.commit()
-        flash(f'Cadastro do aluno: {form_cad_aluno.nome_completo.data} concluído com sucesso!', 'alert-success')
-        return redirect(url_for('cadastro'))
-    return render_template('cad_aluno.html', form_cad_aluno=form_cad_aluno, info_sexo=['M', 'F'])
-
-
 @app.route('/cadastro/cad_atividade', methods=['GET','POST'])
 @login_required
 def cad_atividade():
@@ -139,24 +114,6 @@ def cad_atividade():
         flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
         return redirect(url_for('cadastro'))
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
-
-
-def carregar_id_professor(nome, data_nascimento):
-    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
-    if id_professor:
-        id = id_professor.id
-    else:
-        id = None
-    return id
-
-
-def carregar_id_aluno(nome, data_nascimento):
-    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
-    if id_aluno:
-        id = id_aluno.id
-    else:
-        id = None
-    return id
 
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
@@ -237,7 +194,6 @@ def cad_turma():
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
                            atividades=atividades)
-    
 
 
 @app.route("/area-academica/turmas/<nome>", methods=['GET', 'POST'])
@@ -291,7 +247,17 @@ def carregar_chamada(nome_turma):
                            nome_turma=nome_turma,
                            form_chamada=form_chamada,
                            lista_nomes_alunos=lista_nomes_alunos)
+
+def carregar_aniversarios():
+    professores = Professor.query.all()
+    alunos = Aluno.query.all()
+
+    lista_professores = [[a.nome_completo, datetime.strftime(a.data_nascimento, "%d/%m/%Y")] for a in professores]
+    lista_alunos = [[a.nome_completo, datetime.strftime(a.data_aniversario, "%d/%m/%Y")] for a in alunos]
+    return lista_alunos, lista_professores
+
     
+
 
 def carregar_nomes_alunos(lista_id_alunos):
     lista_nomes_alunos = []
@@ -352,33 +318,25 @@ def carregar_atividades():
     return atividades
 
 
-def carregar_professores():
-    professores = Usuario.query.order_by(Usuario.username.asc())
-    return professores
-
-
-def carregar_alunos():
-    alunos = Aluno.query.order_by(Aluno.nome_completo.asc())
-    return alunos
-
-
 def id_atividade(nome_atividade):
     atividade = Atividade.query.filter_by(atividade=nome_atividade).first()
     id = atividade.id
     return id
 
 
-def id_professor(nome_professor):
-    professor = Usuario.query.filter_by(username=nome_professor).first()
-    id_professor = professor.id
-    return id_professor  
+def carregar_id_professor(nome, data_nascimento):
+    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_professor:
+        id = id_professor.id
+    else:
+        id = None
+    return id
 
 
-def id_aluno(lista_aluno):
-    lista_id = []
-    for aluno in lista_aluno:
-        mat_aluno = Aluno.query.filter_by(nome_completo=aluno).first()
-        id_aluno = str(mat_aluno.id)
-        lista_id.append(id_aluno)
-
-    return ";".join(lista_id)
+def carregar_id_aluno(nome, data_nascimento):
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
+    if id_aluno:
+        id = id_aluno.id
+    else:
+        id = None
+    return id
