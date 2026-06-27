@@ -168,7 +168,7 @@ def cad_turma():
             flash(f"Professor {nome_professor} cadastrado!", 'alert-success')      
         except:
             flash("Por favor, digite uma data válida!", 'alert-danger')
-        
+            break
 
     return render_template('cad_turma.html',
                            form_cad_turma=form_cad_turma,
