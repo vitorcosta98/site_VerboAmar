@@ -27,11 +27,12 @@ def home():
     
     for a in lista_alunos:
         if a[1][:4] == data_atual[:4]:
-            lista_aniversario_alun.append(a[0][:4])
+            lista_aniversario_alun.append(a[0])
     
     for a in lista_adms:
         if a[1][:4] == data_atual[:4]:
-            lista_aniversario_adm.append(a[0][:4])
+            if a not in lista_professores:
+                lista_aniversario_adm.append(a[0])
 
     if len(lista_aniversario_prof) > 0 or len(lista_aniversario_alun) > 0 or len(lista_aniversario_adm)>0:
         resposta=True
@@ -95,6 +96,18 @@ def login():
         
         database.session.add(usuario)
         database.session.commit()
+
+        if form_criarconta.professor.data == 1:
+            id_prof = carregar_id_professor(nome=form_criarconta.username.data, data_nascimento=data_nascimento)
+            if id_prof == None:
+                cad_professor = Professor(
+                    nome_completo=form_criarconta.username.data,
+                    data_nascimento=data_nascimento,
+                    sexo=form_criarconta.sexo.data
+                )
+                database.session.add(cad_professor)
+                database.session.commit()
+        
         flash(f'Conta criada para o e-mail: {form_criarconta.email.data}', 'alert-success')
         return redirect(url_for('home'))
     
