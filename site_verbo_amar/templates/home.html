@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<div class = "d-flex align-items-center justify-content-center gap-3">
+<div class = "d-flex align-items-center gap-1", style="padding-left: 4rem;">
     <div>
         <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0 0 1.5rem;">
             Bem-vindo(a), {{nome_usuario.username}}!
@@ -14,17 +14,27 @@
 </div>
 
 
-{% if not lista_aniversario.empty %}
-<p></p>
-<div class = "d-flex align-items-center justify-content-center gap-3">
-    <h2>Lista de aniversariantes!</h2>
-</div>
-    {% for aniversariante in lista_aniversario %}
-        <div class="d-flex align-items-center justify-content-center gap-3">
-            <p>{{aniversariante}}</p>
-        </div>
-    {% endfor %}
-    
+{% if aniversariantes %}
+    <p></p>
+
+    <div class = "d-flex align-items-center gap-1", style="padding-left: 4rem; padding-top: 2rem;">
+        <h1 style="font-size: 2.4rem;
+        font-weight: 500; 
+        line-height: 1.2;
+        margin: 5 0 1.5rem;
+        color: #FD0D19;">Aniversariantes do Dia!
+        </h1>
+    </div>
+    <div class="multiline", style="padding-left: 4rem;">
+        {% for aniversariante in lista_aniversario_prof %}
+            <p style="font-size: 1.4rem;", style="padding-left: 4rem;">Professor {{aniversariante}}!</p>
+        {% endfor %}
+        {% for aniversariante in lista_aniversario_alun %}
+            <p style="font-size: 1.4rem;", style="padding-left: 4rem;">Aluno {{aniversariante}}!</p>
+        {% endfor %}
+    </div>
+
+        
 {% endif %}
 
 {% endblock %}

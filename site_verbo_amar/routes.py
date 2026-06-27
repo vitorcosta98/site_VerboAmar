@@ -17,20 +17,28 @@ def home():
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y")
 
-    lista_aniversario = []
+    lista_aniversario_prof = []
+    lista_aniversario_alun = []
 
     for a in lista_professores:
         if a[1][:4] == data_atual[:4]:
-            lista_aniversario.append(a[0])
+            lista_aniversario_prof.append(a[0])
     
     for a in lista_alunos:
         if a[1][:4] == data_atual[:4]:
-            lista_aniversario.append(a[0][:4])
+            lista_aniversario_alun.append(a[0][:4])
+
+    if len(lista_aniversario_prof) > 0 or len(lista_aniversario_alun) > 0:
+        resposta=True
+    else:
+        resposta=False
 
 
     return render_template("home.html",
                            nome_usuario=nome_usuario,
-                           lista_aniversario=lista_aniversario)
+                           lista_aniversario_prof=lista_aniversario_prof,
+                           lista_aniversario_alun=lista_aniversario_alun,
+                           aniversariantes=resposta)
 
 
 @app.route("/")
@@ -193,9 +201,6 @@ def cad_turma():
             except Exception as e:
                 print(f"Erro {e}")
                 flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
-
-        print(l_idAlunos)
-        print(l_regAlunos)
 
         flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
 
