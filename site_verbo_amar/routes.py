@@ -216,10 +216,23 @@ def cad_turma():
 
                     id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
                 
-                l_idAlunos.append(id_aluno)
+                l_idAlunos.append(str(id_aluno))
             except Exception as e:
                 print(f"Erro {e}")
                 flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
+
+
+        ids_alunos = ";".join(l_idAlunos)
+
+        cad_turma = Turma(
+            nome_turma = nome_turma,
+            id_professor = id_prof,
+            id_atividade = id_ativ,
+            id_aluno= ids_alunos,
+        )
+
+        database.session.add(cad_turma)
+        database.session.commit()
 
         flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
 
