@@ -166,6 +166,9 @@ def cad_turma():
     atividades = carregar_atividades()
 
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
+        nome_turma = form_cad_turma.nome_turma.data
+        id_ativ = id_atividade(request.form.get('atividade'))
+        
         nome_professor = request.form.get('nomeProfessor')
         data_ani_prof = request.form.get('dataProfessor')
         genero_prof = request.form.get('generoProfessor')
@@ -185,6 +188,7 @@ def cad_turma():
 
         except:
             flash("Falha ao cadastrar professor. Por favor, revise os campos digitados", "alert-danger")
+            exit()
         
         l_nomesAlunos = request.form.getlist("nomeAluno[]")
         l_datasAlunos = request.form.getlist("dataAluno[]")
@@ -211,13 +215,22 @@ def cad_turma():
 
                     id_aluno = carregar_id_aluno(nome=nome_aluno, data_nascimento=data_nasc_aluno)
                 
-                l_idAlunos.append(id_aluno)
+                l_idAlunos.append(str(id_aluno))
             except Exception as e:
-                print(f"Erro {e}")
                 flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
+                break
+        
+        id_aluno = ";".join(l_idAlunos)
 
-        print(l_idAlunos)
-        print(l_regAlunos)
+        nova_turma = Turma(
+            nome_turma=nome_turma,
+            id_professor=id_prof,
+            id_atividade = id_ativ,
+            id_aluno = id_aluno
+        )
+
+        database.session.add(nova_turma)
+        database.session.commit()
 
         flash(f"Cadastro da turma {form_cad_turma.nome_turma.data} concluído!", "alert-success")
 
