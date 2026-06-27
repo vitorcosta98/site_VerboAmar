@@ -9,12 +9,22 @@
         </h1>
         <p style="font-size: 1.4rem;">Selecione uma das opções acima!</p>
     </div>
-    
-
     <img src="{{url_for('static', filename='home_logo.png')}}" alt="study" height="400">
 
-   
 </div>
 
+
+{% if not lista_aniversario.empty %}
+<p></p>
+<div class = "d-flex align-items-center justify-content-center gap-3">
+    <h2>Lista de aniversariantes!</h2>
+</div>
+    {% for aniversariante in lista_aniversario %}
+        <div class="d-flex align-items-center justify-content-center gap-3">
+            <p>{{aniversariante}}</p>
+        </div>
+    {% endfor %}
+    
+{% endif %}
 
 {% endblock %}
