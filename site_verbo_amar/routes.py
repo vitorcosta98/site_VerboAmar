@@ -27,11 +27,12 @@ def home():
     
     for a in lista_alunos:
         if a[1][:4] == data_atual[:4]:
-            lista_aniversario_alun.append(a[0][:4])
+            lista_aniversario_alun.append(a[0])
     
     for a in lista_adms:
         if a[1][:4] == data_atual[:4]:
-            lista_aniversario_adm.append(a[0][:4])
+            if a not in lista_professores:
+                lista_aniversario_adm.append(a[0])
 
     if len(lista_aniversario_prof) > 0 or len(lista_aniversario_alun) > 0 or len(lista_aniversario_adm)>0:
         resposta=True
