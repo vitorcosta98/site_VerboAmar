@@ -14,7 +14,7 @@ class Usuario(database.Model, UserMixin):
     sexo = database.Column(database.String, nullable=False)
     adm = database.Column(database.String, nullable=False)
     professor = database.Column(database.String, nullable=False)
-    data_aniversario = database.Column(database.DateTime, nullable=False)
+    data_nascimento = database.Column(database.DateTime, nullable=False)
 
 
 class Atividade(database.Model):
@@ -27,7 +27,7 @@ class Aluno(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     nome_completo = database.Column(database.String, nullable=False)
     sexo = database.Column(database.String, nullable=False)
-    data_aniversario = database.Column(database.DateTime, nullable=False)
+    data_nascimento = database.Column(database.DateTime, nullable=False)
 
 
 class Turma(database.Model):

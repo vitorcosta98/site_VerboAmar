@@ -12,13 +12,14 @@ from datetime import datetime
 @login_required
 def home():
     nome_usuario = current_user
-    lista_alunos,lista_professores = carregar_aniversarios()
+    lista_alunos,lista_professores, lista_adms = carregar_aniversarios()
 
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y")
 
     lista_aniversario_prof = []
     lista_aniversario_alun = []
+    lista_aniversario_adm = []
 
     for a in lista_professores:
         if a[1][:4] == data_atual[:4]:
@@ -27,8 +28,12 @@ def home():
     for a in lista_alunos:
         if a[1][:4] == data_atual[:4]:
             lista_aniversario_alun.append(a[0][:4])
+    
+    for a in lista_adms:
+        if a[1][:4] == data_atual[:4]:
+            lista_aniversario_adm.append(a[0][:4])
 
-    if len(lista_aniversario_prof) > 0 or len(lista_aniversario_alun) > 0:
+    if len(lista_aniversario_prof) > 0 or len(lista_aniversario_alun) > 0 or len(lista_aniversario_adm)>0:
         resposta=True
     else:
         resposta=False
@@ -38,6 +43,7 @@ def home():
                            nome_usuario=nome_usuario,
                            lista_aniversario_prof=lista_aniversario_prof,
                            lista_aniversario_alun=lista_aniversario_alun,
+                           lista_aniversario_adm=lista_aniversario_adm,
                            aniversariantes=resposta)
 
 
@@ -76,7 +82,7 @@ def login():
 
 
     if form_criarconta.validate_on_submit() and 'botao_submit_criarconta' in request.form:
-        data_aniversario = datetime.strptime(form_criarconta.data_aniversario.data, '%d/%m/%Y')
+        data_nascimento = datetime.strptime(form_criarconta.data_nascimento.data, '%d/%m/%Y')
         senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
 
         usuario = Usuario(username=form_criarconta.username.data,
@@ -85,7 +91,7 @@ def login():
                           sexo=form_criarconta.sexo.data,
                           adm=form_criarconta.adm.data,
                           professor=form_criarconta.professor.data,
-                          data_aniversario=data_aniversario)
+                          data_nascimento=data_nascimento)
         
         database.session.add(usuario)
         database.session.commit()
@@ -134,7 +140,7 @@ def carregar_id_professor(nome, data_nascimento):
 
 
 def carregar_id_aluno(nome, data_nascimento):
-    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
     if id_aluno:
         id = id_aluno.id
     else:
@@ -190,7 +196,7 @@ def cad_turma():
                     cad_aluno = Aluno(
                         nome_completo = nome_aluno,
                         sexo=genero_aluno,
-                        data_aniversario=data_nasc_aluno
+                        data_nascimento=data_nasc_aluno
                     )
                     database.session.add(cad_aluno)
                     database.session.commit()
@@ -264,10 +270,12 @@ def carregar_chamada(nome_turma):
 def carregar_aniversarios():
     professores = Professor.query.all()
     alunos = Aluno.query.all()
+    adms = Usuario.query.all()
 
     lista_professores = [[a.nome_completo, datetime.strftime(a.data_nascimento, "%d/%m/%Y")] for a in professores]
-    lista_alunos = [[a.nome_completo, datetime.strftime(a.data_aniversario, "%d/%m/%Y")] for a in alunos]
-    return lista_alunos, lista_professores
+    lista_alunos = [[a.nome_completo, datetime.strftime(a.data_nascimento, "%d/%m/%Y")] for a in alunos]
+    lista_usuarios = [[a.username, datetime.strftime(a.data_nascimento, "%d/%m/%Y")] for a in adms]
+    return lista_alunos, lista_professores, lista_usuarios
 
     
 
@@ -347,7 +355,7 @@ def carregar_id_professor(nome, data_nascimento):
 
 
 def carregar_id_aluno(nome, data_nascimento):
-    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_aniversario=data_nascimento).first()
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
     if id_aluno:
         id = id_aluno.id
     else:

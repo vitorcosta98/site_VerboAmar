@@ -15,7 +15,7 @@ class FormCriarConta(FlaskForm):
     sexo = SelectField("Sexo", choices=[("",'Selecione...'), ('M',"M"),('F',"F")],validators=[DataRequired()])
     adm = BooleanField('Adm')
     professor = BooleanField('Professor')
-    data_aniversario = StringField('Data Aniversário',
+    data_nascimento = StringField('Data Aniversário',
                                    validators=[
                                        DataRequired(),
                                        Regexp(r'^\d{2}/\d{2}/\d{4}',message="Use o formato DD/MM/AAAA")
@@ -29,7 +29,7 @@ class FormCriarConta(FlaskForm):
         if usuario:
             raise ValidationError('E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar.')
         
-    def validate_data_aniversario(self,field):
+    def validate_data_nascimento(self,field):
         try:
             datetime.strptime(field.data,"%d/%m/%Y")
         except ValueError:
