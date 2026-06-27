@@ -12,7 +12,7 @@ class FormCriarConta(FlaskForm):
     email = StringField("E-mail", validators=[DataRequired(), Email()])
     senha = PasswordField("Senha:", validators=[DataRequired(), Length(6, 20)])
     confirmacao_senha = PasswordField("Confirmação da Senha:", validators=[DataRequired(), EqualTo('senha')])
-    sexo = SelectField("Sexo", choices=[("",'Selecione...'), ('M',"Masculino"),('F',"Femino")],validators=[DataRequired()])
+    sexo = SelectField("Sexo", choices=[("",'Selecione...'), ('masculino',"M"),('feminino',"F")],validators=[DataRequired()])
     adm = BooleanField('Adm')
     professor = BooleanField('Professor')
     data_nascimento = StringField('Data Aniversário',
