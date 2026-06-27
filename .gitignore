@@ -1,0 +1,5 @@
+# Ignore todos os arquivos com a extensão 
+*.pyc
+
+## Ignore diretórios de cache Python
+_pycache_/
