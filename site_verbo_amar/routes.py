@@ -6,6 +6,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from datetime import datetime
+import sys
 
 
 @app.route("/home", methods=['POST','GET'])
@@ -62,6 +63,8 @@ def area_academica():
 
     if adm=="1":
         privilegio=True
+    else:
+        privilegio=False
     
     return render_template("area_academica.html", atividades=atividades,privilegio=privilegio)
 
@@ -195,6 +198,7 @@ def cad_turma():
 
         except:
             flash("Falha ao cadastrar professor. Por favor, revise os campos digitados", "alert-danger")
+            return redirect(url_for("cad_turma"))
         
         l_nomesAlunos = request.form.getlist("nomeAluno[]")
         l_datasAlunos = request.form.getlist("dataAluno[]")
@@ -225,6 +229,7 @@ def cad_turma():
             except Exception as e:
                 print(f"Erro {e}")
                 flash("Falha ao cadastrar alunos. Por favor, revise os campos digitados.", "alert-danger")
+                return redirect(url_for('cad_turma'))
 
 
         ids_alunos = ";".join(l_idAlunos)
@@ -254,6 +259,8 @@ def exibir_turmas(nome):
 
     if current_user.adm == "1":
         privilegio=True
+    else:
+        privilegio=False
 
     return render_template('pag_turmas.html',
                            nome_atividade=atividade.atividade,

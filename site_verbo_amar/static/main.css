@@ -3,12 +3,13 @@
 }
 
 [data-tooltip]:hover::after {
-  display: block;
-  position: absolute;
+  display: inline-block;
+  position: fixed;
   content: attr(data-tooltip);
   border: 1px solid black;
   background: #eee;
   padding: .25em;
+  z-index: 3;
 }
 
 #cards-cadastro {
@@ -19,7 +20,6 @@
   margin: 0vw auto 15vw 7vw;
   width: 50%;
 }
-
 #cards-cadastro .card{
   display: flex;
   flex-direction: column;
@@ -46,7 +46,7 @@
   flex-direction: row;
   padding: 2rem 2rem 3rem 3rem;
   margin-bottom: 1rem;
-  width: 28rem;
+  width: 27rem;
   height: 20rem;
   align-items: center;
   justify-content: space-between;
@@ -72,4 +72,35 @@
   align-items: left;
   justify-content: left;
   margin-top: 0rem;
+}
+
+[chamada-data-tooltip]:hover::after {
+  display: inline-block;
+  position: fixed;
+  content: attr(data-tooltip);
+  border: 1px solid black;
+  background: #eee;
+  padding: .25em;
+  z-index: 3;
+}
+
+#card-pag-turmas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: left;
+  gap: 5%;
+  margin: 0vw auto 10vw 3vw;
+  width: 50%;
+}
+
+#card-pag-turmas .card {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem 2rem 3rem 3rem;
+  margin-bottom: 1rem;
+  width: 18rem;
+  height: 15rem;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 2vh;
 }

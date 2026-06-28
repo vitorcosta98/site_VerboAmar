@@ -46,18 +46,21 @@
                                             <label class="form-control-label">Presente</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" name="aluno" id="{{aluno}}_faltou" value="{{aluno[1]}}|faltou">
+                                            <input class="form-check-input" 
+                                            type="checkbox" name="aluno" id="{{aluno}}_faltou" value="{{aluno[1]}}|faltou">
                                             <label class="form-control-label">Faltou</label>
                                         </div>
+                                        <span data-tooltip="Excluir Aluno">
+                                            <a href="#" style="text-decoration: none;">❌</a>
+                                        </span>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
-                            <div class="col">
-                        </div>
-                    </div>
+                        <div class="col"></div>
                 </fieldset>
             {{form_chamada.botao_submit_chamada(class="btn btn-primary mt-2")}}
+            <a class="btn btn-success mt-2">Cadastrar Novo Aluno na Turma</a>
             </form>
         </div>
     </div>
