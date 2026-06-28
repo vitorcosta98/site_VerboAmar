@@ -312,6 +312,7 @@ def carregar_chamada(nome_turma):
                            form_chamada=form_chamada,
                            lista_nomes_alunos=lista_nomes_alunos)
 
+
 def carregar_aniversarios():
     professores = Professor.query.all()
     alunos = Aluno.query.all()
@@ -406,3 +407,51 @@ def carregar_id_aluno(nome, data_nascimento):
     else:
         id = None
     return id
+
+
+def carregar_id_turma(nome):
+    id_turma = Turma.query.filter_by(nome_turma=nome).first()
+
+    if id_turma:
+        id = id_turma.id
+    else:
+        id=None
+    
+    return id
+
+
+@app.route('/area-academica/<nome_atividade>', methods=['GET','POST'])
+def excluir_atividade(nome_atividade):
+    id_ativ = id_atividade(nome_atividade=nome_atividade)
+
+    try:
+        excluir_atividade = Atividade.query.filter_by(id=id_ativ).first()
+        excluir_turma = Turma.__table__.delete().where(Turma.id_atividade==id_ativ)
+        
+        database.session.delete(excluir_atividade)
+        database.session.execute(excluir_turma)
+        database.session.commit()
+    except Exception as e:
+        flash("Ocorreu um erro ao excluir a Atividade, recarregue a página")
+        return redirect(url_for("area_academica"))
+
+    flash(f'{nome_atividade} excluída!', "alert-success")
+    return redirect(url_for("area_academica"))
+
+
+@app.route('/area-academica/turmas/<atividade>/<nome_turma>', methods=['GET','POST'])
+def excluir_turma(nome_turma,atividade):
+    id_turma = carregar_id_turma(nome=nome_turma)
+    atividade=atividade
+    try:
+        excluir_turma = Turma.__table__.delete().where(Turma.id==id_turma)
+        database.session.execute(excluir_turma)
+        database.session.commit()
+    except Exception as e:
+        flash("Ocorreu um erro ao excluir a Atividade, recarregue a página")
+        return redirect(url_for("exibir_turmas"))
+
+    flash(f'{nome_turma} excluída com sucesso!', 'alert-success')
+
+    return redirect(url_for("exibir_turmas", nome=atividade))
+
