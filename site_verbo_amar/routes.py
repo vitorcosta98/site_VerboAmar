@@ -406,3 +406,22 @@ def carregar_id_aluno(nome, data_nascimento):
     else:
         id = None
     return id
+
+
+@app.route('/area-academica/<nome_atividade>', methods=['GET','POST'])
+def excluir_atividade(nome_atividade):
+    id_ativ = id_atividade(nome_atividade=nome_atividade)
+
+    try:
+        excluir_atividade = Atividade.query.filter_by(id=id_ativ).first()
+        excluir_turma = Turma.__table__.delete().where(Turma.id_atividade==id_ativ)
+        
+        database.session.delete(excluir_atividade)
+        database.session.execute(excluir_turma)
+        database.session.commit()
+    except Exception as e:
+        flash("Ocorreu um erro ao excluir a Atividade, recarregue a página")
+        return redirect(url_for("area_academica"))
+
+    return redirect(url_for("area_academica"))
+

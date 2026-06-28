@@ -19,7 +19,7 @@
       <p class="card-text">Número de Alunos: {{atividades[ativ]["alunos"]}}</p>
       <p class="card-text">Dias das Aulas: {{atividades[ativ]["dias_aula"]}}</p>
       <a href="{{ url_for('exibir_turmas', nome=atividades[ativ]['nome_atividade']) }}" class="btn btn-primary">Acessar Curso</a>
-      <a href="#" class="btn btn-danger">Excluir Atividade</a>
+      <a href="{{url_for('excluir_atividade', nome_atividade=atividades[ativ]['nome_atividade']) }}" class="btn btn-danger">Excluir Atividade</a>
     </div>
   </div>
  {% endfor %}
