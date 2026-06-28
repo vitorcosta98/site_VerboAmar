@@ -51,7 +51,7 @@
                                             <label class="form-control-label">Faltou</label>
                                         </div>
                                         <span data-tooltip="Excluir Aluno">
-                                            <a href="#" style="text-decoration: none;">❌</a>
+                                            <a href="{{url_for('excluir_aluno',nome_aluno=aluno[0], id_aluno=aluno[1],turma=nome_turma)}}" style="text-decoration: none;">❌</a>
                                         </span>
                                     </li>
                                 {% endfor %}
