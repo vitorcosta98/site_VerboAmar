@@ -275,13 +275,10 @@ def carregar_chamada(nome_turma):
     if type(turma.id_aluno) == int:
         lista_id_alunos = [turma.id_aluno]
     else:
-        lista_id_alunos = list(turma.id_aluno)
-        for id in lista_id_alunos:
-            if id == ";":
-                lista_id_alunos.remove(id)
+        lista_id_alunos = [id for id in turma.id_aluno.split(";") if id]
+    
 
     lista_nomes_alunos = carregar_nomes_alunos(lista_id_alunos)
-
     form_chamada = FormChamada()
 
     if form_chamada.validate_on_submit() and "botao_submit_chamada" in request.form:
@@ -448,10 +445,30 @@ def excluir_turma(nome_turma,atividade):
         database.session.execute(excluir_turma)
         database.session.commit()
     except Exception as e:
-        flash("Ocorreu um erro ao excluir a Atividade, recarregue a página")
-        return redirect(url_for("exibir_turmas"))
+        flash("Ocorreu um erro ao excluir a Atividade, recarregue a página.")
+        return redirect(url_for("exibir_turmas", nome=atividade))
 
     flash(f'{nome_turma} excluída com sucesso!', 'alert-success')
 
     return redirect(url_for("exibir_turmas", nome=atividade))
 
+
+@app.route('/area-academica/turmas/chamada/excluir/<turma>/<nome_aluno>/<id_aluno>', methods=['GET','POST'])
+def excluir_aluno(turma, nome_aluno,id_aluno):
+    turma=turma
+    try:
+        excluir_aluno = Aluno.query.filter_by(id=id_aluno).first()
+        database.session.delete(excluir_aluno)
+    
+        turma_aluno = Turma.query.filter_by(nome_turma=turma).first()
+        ids = turma_aluno.id_aluno.split(";")
+        excluir_id_aluno = [id for id in ids if id != str(id_aluno)]
+        turma_aluno.id_aluno = ";".join(excluir_id_aluno)
+        database.session.commit()
+
+    except Exception as e:
+        flash("Ocorreu um erro ao excluir Aluno, recarregue a página", 'alert-danger')
+        return redirect(url_for("carregar_chamada", nome_turma=turma))
+
+    flash(f"Aluno {nome_aluno} excluído com sucesso.", 'alert-success')
+    return redirect(url_for("carregar_chamada", nome_turma=turma))
