@@ -3,12 +3,13 @@
 }
 
 [data-tooltip]:hover::after {
-  display: block;
-  position: absolute;
+  display: inline-block;
+  position: fixed;
   content: attr(data-tooltip);
   border: 1px solid black;
   background: #eee;
   padding: .25em;
+  z-index: 3;
 }
 
 #cards-cadastro {
@@ -71,4 +72,14 @@
   align-items: left;
   justify-content: left;
   margin-top: 0rem;
+}
+
+[chamada-data-tooltip]:hover::after {
+  display: inline-block;
+  position: fixed;
+  content: attr(data-tooltip);
+  border: 1px solid black;
+  background: #eee;
+  padding: .25em;
+  z-index: 3;
 }
