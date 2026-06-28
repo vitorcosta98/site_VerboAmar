@@ -13,7 +13,7 @@
                 <h5 class="card-title">{{turma.nome_turma}}</h5>
                 <a href="{{url_for('carregar_chamada',nome_turma=turma.nome_turma)}}" class="btn btn-primary mt-2">Acessar Turma</a>
                 {% if privilegio %}
-                    <a href="#" class="btn btn-danger mt-2">Excluir Turma</a>
+                    <a href="{{url_for('excluir_turma',nome_turma=turma.nome_turma, atividade=nome_atividade)}}" class="btn btn-danger mt-2">Excluir Turma</a>
                 {% endif%}
             </div>
         </div>
