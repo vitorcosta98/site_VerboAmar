@@ -30,29 +30,45 @@
   justify-content: space-between;
   border-radius: 2vh;
 }
-.card {
+
+#card-area-academica {
   display: flex;
-  flex-direction: column;
-  padding: 1rem 2rem 3rem 3rem;
+  flex-wrap: wrap;
+  align-items: left;
+  gap: 5%;
+  margin: 0vw auto 10vw 3vw;
+  width: 50%;
+}
+
+#card-area-academica .card {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem 2rem 3rem 3rem;
   margin-bottom: 1rem;
-  width: 20rem;
+  width: 28rem;
   height: 20rem;
   align-items: center;
   justify-content: space-between;
   border-radius: 2vh;
 }
 
-.card .content {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-}
-
-.card .button {
+#card-area-academica .card .button {
   width: 100%;
   border-radius: 2vh;
   text-decoration: none;
   font-weight: 700;
   padding: 1em 1.3em;
   text-align: center;
+}
+
+#pag-turmas .flex{
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
+#pag-turmas .button{
+  padding: 15px;
+  align-items: left;
+  justify-content: left;
+  margin-top: 0rem;
 }
