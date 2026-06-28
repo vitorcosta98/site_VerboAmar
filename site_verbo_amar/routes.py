@@ -58,7 +58,12 @@ def pag_inicial():
 def area_academica():
     atividades = carregar_nome_atividades()
     atividades = carregar_turmas(atividades)
-    return render_template("area_academica.html", atividades=atividades)
+    adm = current_user.adm
+
+    if adm=="1":
+        privilegio=True
+    
+    return render_template("area_academica.html", atividades=atividades,privilegio=privilegio)
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -245,8 +250,15 @@ def cad_turma():
 @login_required
 def exibir_turmas(nome):
     atividade = Atividade.query.filter_by(atividade=nome).first_or_404()
-    turmas = Turma.query.filter_by(id_atividade=atividade.id).all() 
-    return render_template('pag_turmas.html', nome_atividade=atividade.atividade, turmas=turmas)
+    turmas = Turma.query.filter_by(id_atividade=atividade.id).all()
+
+    if current_user.adm == "1":
+        privilegio=True
+
+    return render_template('pag_turmas.html',
+                           nome_atividade=atividade.atividade,
+                           turmas=turmas,
+                           privilegio=privilegio)
 
 
 @app.route("/area-academica/turmas/chamada/<nome_turma>", methods=['GET','POST'])

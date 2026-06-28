@@ -9,11 +9,20 @@
 <div class="container">
     <form method="POST" action="" id="nome_turma" class="border p-4 mt-2">
         <fieldset>
-            {% for turma in turmas %}
-                <a style="text-decoration:none" href="{{ url_for('carregar_chamada', nome_turma=turma.nome_turma) }}">
-                    <p>{{turma.nome_turma}}</p>
-                </a>
-            {% endfor %}
+            <div id="pag-turmas">
+                {% for turma in turmas %}
+                    <div class="d-flex align-items-center gap-3 mb-2"">
+                        <a style="text-decoration:none" href="{{ url_for('carregar_chamada', nome_turma=turma.nome_turma) }}">
+                            <p>{{turma.nome_turma}}</p>
+                        </a>
+                        {% if privilegio %}
+                            <div class="button">
+                                <a href="#" class="btn btn-danger">Excluir Turma</a>
+                            </div>
+                        {%endif%}
+                    </div>
+                {% endfor %}
+            </div>
         </fieldset>
     </form>
 </div>
