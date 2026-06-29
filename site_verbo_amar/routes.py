@@ -6,7 +6,6 @@ from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from datetime import datetime
-import sys
 
 
 @app.route("/home", methods=['POST','GET'])
@@ -304,6 +303,8 @@ def carregar_chamada(nome_turma):
         database.session.add(presenca)
         database.session.commit()
 
+        flash('Chamada registrada com sucesso!', "alert-success")
+
     return render_template('pag_chamada.html',
                            nome_turma=nome_turma,
                            form_chamada=form_chamada,
@@ -319,8 +320,6 @@ def carregar_aniversarios():
     lista_alunos = [[a.nome_completo, datetime.strftime(a.data_nascimento, "%d/%m/%Y")] for a in alunos]
     lista_usuarios = [[a.username, datetime.strftime(a.data_nascimento, "%d/%m/%Y")] for a in adms]
     return lista_alunos, lista_professores, lista_usuarios
-
-    
 
 
 def carregar_nomes_alunos(lista_id_alunos):
