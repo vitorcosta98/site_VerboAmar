@@ -6,7 +6,6 @@ from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from datetime import datetime
-import sys
 
 
 @app.route("/home", methods=['POST','GET'])
