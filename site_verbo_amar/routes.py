@@ -168,6 +168,12 @@ def carregar_id_aluno(nome, data_nascimento):
     return id
 
 
+def carregar_nome_turma(nome):
+    nome_turma = Turma.query.filter_by(nome_turma=nome).first()
+
+    return nome_turma
+
+
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
 @login_required
 def cad_turma():
@@ -177,6 +183,12 @@ def cad_turma():
     if form_cad_turma.validate_on_submit() and 'botao_submit_turma' in request.form:
         nome_turma = form_cad_turma.nome_turma.data
         id_ativ = id_atividade(request.form.get('atividade'))
+
+        turma_registrada = carregar_nome_turma(nome_turma)
+        if turma_registrada:
+            flash(f'{nome_turma} Já Registrada! Por favor, informar outro nome.','alert-danger')
+            return redirect(url_for("cad_turma"))
+
         
         nome_professor = request.form.get('nomeProfessor')
         data_ani_prof = request.form.get('dataProfessor')
