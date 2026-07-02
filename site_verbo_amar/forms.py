@@ -50,7 +50,7 @@ class FormCadAtividade(FlaskForm):
     def validate_atividade(self, atividade):
         ativ = Atividade.query.filter_by(atividade=atividade.data).first()
         if ativ:
-            raise ValidationError('E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar.')
+            raise ValidationError('Atividade já cadastrada!')
 
 
 class FormTurma(FlaskForm):

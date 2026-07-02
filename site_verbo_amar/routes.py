@@ -139,39 +139,22 @@ def cadastro():
 def cad_atividade():
     form_cad_ativ = FormCadAtividade()
     if form_cad_ativ.validate_on_submit() and 'botao_submit_ativ' in request.form:
-        dias_atividade = dias_cursos(form_cad_ativ)
-        ativ = Atividade(atividade=form_cad_ativ.atividade.data,
-                        dias_aula = dias_atividade)
-        
-        database.session.add(ativ)
-        database.session.commit()
-        flash(f'Cadastro da atividade: {form_cad_ativ.atividade.data} concluído com sucesso!', 'alert-success')
-        return redirect(url_for('cadastro'))
+        try:
+            atividade = form_cad_ativ.atividade.data
+
+            dias_atividade = dias_cursos(form_cad_ativ)
+            ativ = Atividade(atividade=atividade,
+                            dias_aula = dias_atividade)
+            
+            database.session.add(ativ)
+            database.session.commit()
+            flash(f'Cadastro da atividade: {atividade} concluído com sucesso!', 'alert-success')
+            return redirect(url_for('cadastro'))
+        except:
+            form_cad_ativ.atividade.errors.append("Atividade já cadastrada!")
+            print(form_cad_ativ.errors)
+    
     return render_template('cad_atividade.html', form_cad_ativ=form_cad_ativ)
-
-
-def carregar_id_professor(nome, data_nascimento):
-    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
-    if id_professor:
-        id = id_professor.id
-    else:
-        id = None
-    return id
-
-
-def carregar_id_aluno(nome, data_nascimento):
-    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
-    if id_aluno:
-        id = id_aluno.id
-    else:
-        id = None
-    return id
-
-
-def carregar_nome_turma(nome):
-    nome_turma = Turma.query.filter_by(nome_turma=nome).first()
-
-    return nome_turma
 
 
 @app.route("/cadastro/cad_turma", methods=['GET','POST'])
@@ -483,3 +466,27 @@ def excluir_aluno(turma, nome_aluno,id_aluno):
 
     flash(f"Aluno {nome_aluno} excluído com sucesso.", 'alert-success')
     return redirect(url_for("carregar_chamada", nome_turma=turma))
+
+
+def carregar_id_professor(nome, data_nascimento):
+    id_professor = Professor.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_professor:
+        id = id_professor.id
+    else:
+        id = None
+    return id
+
+
+def carregar_id_aluno(nome, data_nascimento):
+    id_aluno = Aluno.query.filter_by(nome_completo=nome, data_nascimento=data_nascimento).first()
+    if id_aluno:
+        id = id_aluno.id
+    else:
+        id = None
+    return id
+
+
+def carregar_nome_turma(nome):
+    nome_turma = Turma.query.filter_by(nome_turma=nome).first()
+
+    return nome_turma
