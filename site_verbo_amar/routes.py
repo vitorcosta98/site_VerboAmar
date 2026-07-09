@@ -53,6 +53,12 @@ def pag_inicial():
     return render_template("pag_inicial.html")
 
 
+@app.route("/indicadores")
+@login_required
+def indicadores():
+    return render_template('indicadores.html')
+
+
 @app.route("/area-academica", methods=['POST','GET'])
 @login_required
 def area_academica():

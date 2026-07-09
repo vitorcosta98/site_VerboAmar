@@ -2,6 +2,54 @@
     font-family:'Poppins', sans-serif;
 }
 
+:root {
+  --navbar-height: 56px; /* adjust to match your actual navbar height */
+}
+
+#content {
+  min-height: calc(100vh - var(--navbar-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+#content h1 {
+  font-size: 2.4rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+#content p {
+  font-size: 1.4rem;
+}
+
+.aniversariantes-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.multiline {
+  text-align: center;
+}
+
+#content img {
+  max-width: 30%;
+  height: auto;
+}
+
+.aniversariantes-img{
+  width: 20%;
+  height: auto;
+}
+
 [data-tooltip]:hover::after {
   display: inline-block;
   position: fixed;
