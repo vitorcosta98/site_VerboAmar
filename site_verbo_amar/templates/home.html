@@ -2,31 +2,31 @@
 
 {% block body %}
 
-<div class = "d-flex align-items-center gap-1", style="padding-left: 4rem; margin-top: 2rem;">
+<div id = "content">
     <div>
-        <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2; margin: 0 0 1.5rem;">
+        <h1 style="font-size: 2.4rem; font-weight: 500; line-height: 1.2;">
             Bem-vindo(a), {{nome_usuario.username}}!
         </h1>
         <p style="font-size: 1.4rem;">Selecione uma das opções acima!</p>
 
         {% if aniversariantes %}
-            <div class = "d-flex align-items-center gap-1", style="padding-left: 4rem; padding-top: 2rem;">
-                <img src="{{url_for('static', filename='aniversariantes.png')}}" alt="study" height="250">
+            <div class = "aniversariantes-wrap">
+                <img class="aniversariantes-img" src="{{url_for('static', filename='aniversariantes.png')}}" alt="study" height="100">
             </div>
-            <div class="multiline", style="padding-left: 4rem;">
+            <div class="multiline">
             {% for aniversariante in lista_aniversario_prof %}
-                <p style="font-size: 1.4rem;", style="padding-left: 4rem;">🎉Professor(a) {{aniversariante}}!🎉</p>
+                <p>🎉Professor(a) {{aniversariante}}!🎉</p>
             {% endfor %}
             {% for aniversariante in lista_aniversario_alun %}
-                <p style="font-size: 1.4rem;", style="padding-left: 4rem;">🎉Aluno(a) {{aniversariante}}!🎉</p>
+                <p>🎉Aluno(a) {{aniversariante}}!🎉</p>
             {% endfor %}
             {% for aniversariante in lista_aniversario_adm %}
-                <p style="font-size: 1.4rem;", style="padding-left: 4rem;">🎉Senhor(a) {{aniversariante}}!🎉</p>
+                <p>🎉Senhor(a) {{aniversariante}}!🎉</p>
             {% endfor %}
             </div>  
         {% endif %}
-        
     </div>
-    <img src="{{url_for('static', filename='home_logo.png')}}" alt="study" height="400">
+    <img src="{{url_for('static', filename='home_logo.png')}}" alt="study" height="300">
 </div>
+
 {% endblock %}
