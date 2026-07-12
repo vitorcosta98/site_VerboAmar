@@ -10,19 +10,28 @@
 </div>
 <hr>
 <div id="card-area-academica">
-{% for ativ in atividades %}
-  <div class="card">
-    <div class="card-content">
-      <h5 class="card-title">{{atividades[ativ]["nome_atividade"]}}</h5>
-      <p class="card-text">Número de Turmas: {{atividades[ativ]["turmas"]}}</p>
-      <p class="card-text">Número de Professores: {{atividades[ativ]["n_professores"]}}</p>
-      <p class="card-text">Número de Alunos: {{atividades[ativ]["alunos"]}}</p>
-      <p class="card-text">Dias das Aulas: {{atividades[ativ]["dias_aula"]}}</p>
-      <a href="{{ url_for('exibir_turmas', nome=atividades[ativ]['nome_atividade']) }}" class="btn btn-primary">Acessar Curso</a>
-      <a href="{{url_for('excluir_atividade', nome_atividade=atividades[ativ]['nome_atividade']) }}" class="btn btn-danger">Excluir Atividade</a>
+  <div class="cards"> 
+    {% for ativ in atividades %}
+      <article class="card">
+        <header>
+          <h2>{{atividades[ativ]["nome_atividade"]}}</h2>
+        </header>
+
+        <div class="content">
+          <p>Número de Turmas: {{atividades[ativ]["turmas"]}}</p>
+          <p>Número de Professores: {{atividades[ativ]["n_professores"]}}</p>
+          <p>Número de Alunos: {{atividades[ativ]["alunos"]}}</p>
+          <p>Dias das Aulas:</p>
+          <text>{{atividades[ativ]["dias_aula"]}}</text>
+        </div>
+
+        <div class="card-actions">
+          <a href="{{ url_for('exibir_turmas', nome=atividades[ativ]['nome_atividade']) }}" class="btn btn-primary">Acessar Curso</a>
+          <a href="{{url_for('excluir_atividade', nome_atividade=atividades[ativ]['nome_atividade']) }}" class="btn btn-danger">Excluir Curso</a>
+        </div>
+      </article>
+    {% endfor %}
     </div>
-  </div>
- {% endfor %}
 </div>
 
 {% endblock %}
